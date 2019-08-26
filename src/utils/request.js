@@ -1,9 +1,10 @@
 import axios from 'axios'
+import config from '../config'
 
 // 创建axios实例
 const service = axios.create({
   // api的base_url
-  baseURL: 'http://localhost:3000/api/book',
+  baseURL: `${config.env.BASE_API}/api/book`,
   // 请求超时时间
   timeout: 60000,
   // 允许携带cookie
