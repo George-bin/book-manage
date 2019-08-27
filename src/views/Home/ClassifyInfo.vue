@@ -2,14 +2,11 @@
   <div class="classify-info-main-component">
     <h2 class="main-title">分类信息</h2>
     <el-form>
-      <el-form-item label="分类ID">
-        <el-input v-model="classifyForm.classifyId" placeholder="请输入分类ID!"></el-input>
-      </el-form-item>
       <el-form-item label="分类名称">
         <el-input v-model="classifyForm.classifyName" placeholder="请输入分类名称!"></el-input>
       </el-form-item>
       <el-form-item label="书籍数量">
-        <el-input v-model="classifyForm.classifyBookCount" placeholder="请输入书籍数量!"></el-input>
+        <el-input v-model="classifyForm.classifyBookCount" placeholder="请输入书籍数量!" disabled></el-input>
       </el-form-item>
       <el-form-item style="text-align: center">
         <el-button v-if="useType === 'add' || !useType" @click="handleRegisterClassify" class="submit-btn" type="primary">提交</el-button>
@@ -43,7 +40,10 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          this.RegisterClassify(this.classifyForm)
+          this.RegisterClassify({
+            classifyId: Date.now().toString(),
+            classifyName: this.classifyForm.classifyName
+          })
             .then(() => {
               this.$message({
                 type: 'success',

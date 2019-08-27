@@ -1,6 +1,6 @@
 <template>
-  <div class="home-main-component">
-    <h2 class="main-title">书籍信息</h2>
+  <div class="book-info-main-component">
+    <h2 class="book-info-title">书籍信息</h2>
     <el-form>
       <el-form-item label="书籍名称">
         <el-input v-model="bookInfo.bookName" placeholder="请输入书籍名称!"></el-input>
@@ -12,12 +12,14 @@
         <el-input v-model="bookInfo.bookId" placeholder="请输入书籍ID!"></el-input>
       </el-form-item>
       <el-form-item label="分类">
-        <el-radio-group v-model="bookInfo.classify">
-          <el-radio label="小编推荐">小编推荐</el-radio>
-          <el-radio label="青春文学">青春文学</el-radio>
-          <el-radio label="影视原著">影视原著</el-radio>
-          <el-radio label="推理悬疑">推理悬疑</el-radio>
-        </el-radio-group>
+        <el-select v-model="bookInfo.classify" placeholder="请选择" @change="handleChangeClassify">
+          <el-option
+            v-for="item in classifyList"
+            :key="item._id"
+            :label="item.classifyName"
+            :value="item.classifyId">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="章节数">
         <el-input v-model="bookInfo.sectionCount" placeholder="请输入小说章节数!"></el-input>
@@ -108,7 +110,8 @@ export default {
   },
   computed: {
     ...mapState({
-      bookList: state => state.home.bookList
+      bookList: state => state.home.bookList,
+      classifyList: state => state.home.classifyList
     })
   },
   watch: {
@@ -171,10 +174,10 @@ export default {
 </script>
 
 <style lang="scss">
-  .home-main-component {
+  .book-info-main-component {
     width: 400px;
     margin: 0 auto;
-    .main-title {
+    .book-info-title {
       height: 70px;
       line-height: 70px;
       font-size: 22px;

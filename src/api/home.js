@@ -1,9 +1,9 @@
 import request from '../utils/request'
 
 // 获取小说列表
-export function getBookListRequest () {
+export function getBookListRequest (classifyId) {
   return request({
-    url: '/list',
+    url: `/list/${classifyId}`,
     method: 'get'
   })
 }
@@ -54,6 +54,22 @@ export function registerClassifyRequest (data) {
 export function updateClassifyRequest (data) {
   return request({
     url: '/updateClassify',
+    method: 'post',
+    data: data
+  })
+}
+
+// 获取用户列表
+export function getUserListRequest () {
+  return request({
+    url: '/getUserList'
+  })
+}
+
+// 新增用户
+export function registerUserRequest (data) {
+  return request({
+    url: '/registerUser',
     method: 'post',
     data: data
   })

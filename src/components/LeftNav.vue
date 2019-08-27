@@ -21,11 +21,11 @@
           <i class="el-icon-folder-add"></i>
           <span slot="title">新建/编辑分类</span>
         </el-menu-item>
-        <el-menu-item index="/">
+        <el-menu-item index="/bookList">
           <i class="el-icon-tickets"></i>
           <span slot="title">小说列表</span>
         </el-menu-item>
-        <el-menu-item index="/classify">
+        <el-menu-item index="/classifyList">
           <i class="el-icon-folder"></i>
           <span slot="title">分类列表</span>
         </el-menu-item>
