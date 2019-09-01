@@ -29,10 +29,18 @@ export default {
       useType: 'add'
     }
   },
+  created () {
+    let { classifyInfo, type } = this.$route.params
+    if (classifyInfo) {
+      this.useType = type
+      this.classifyForm = { ...classifyInfo }
+    }
+  },
   methods: {
     ...mapActions([
       'RegisterClassify',
-      'UpdateClassify'
+      'UpdateClassify',
+      'GetClassifyList'
     ]),
     // 新增分类
     handleRegisterClassify () {
@@ -50,6 +58,7 @@ export default {
                 message: '成功!'
               })
               this.useType = 'edit'
+              this.GetClassifyList()
             })
         })
         .catch(() => {
@@ -69,6 +78,7 @@ export default {
                 message: '成功!'
               })
               this.useType = 'edit'
+              this.GetClassifyList()
             })
         })
         .catch(() => {

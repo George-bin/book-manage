@@ -52,7 +52,10 @@ export default {
       'GetClassifyList'
     ]),
     // 编辑分类
-    handleEditClassify () {}
+    handleEditClassify (classify) {
+      console.log('classify:', classify)
+      this.$router.push({name: 'ClassifyInfo', params: {classifyInfo: classify, type: 'edit'}})
+    }
   }
 }
 </script>

@@ -54,7 +54,7 @@ export function registerClassifyRequest (data) {
 export function updateClassifyRequest (data) {
   return request({
     url: '/updateClassify',
-    method: 'post',
+    method: 'put',
     data: data
   })
 }

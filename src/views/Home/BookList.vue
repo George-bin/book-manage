@@ -3,7 +3,7 @@
     <el-button class="create-book-btn" type="text" size="small" @click="handleGoAdd">新建</el-button>
     <!--搜索/切换分类-->
     <div class="">
-      <el-select v-model="activeClassifyId" placeholder="请选择" @change="handleChangeClassify">
+      <el-select v-model="classifyId" placeholder="请选择" @change="handleChangeClassify">
         <el-option
           v-for="item in classifyList"
           :key="item._id"
@@ -124,6 +124,7 @@ export default {
       background: #4bb8c5;
     }
     .book-list {
+      margin-top: 20px;
       .book-list-item {
         display: flex;
         .book-cover {
