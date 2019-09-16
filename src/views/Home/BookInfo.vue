@@ -127,19 +127,26 @@ export default {
   },
   mounted () {
     // console.log('this.$route.params.bookinfo', this.$route.params.bookinfo)
-    let { bookinfo, type } = this.$route.params
-    this.useType = type
-    // 新建/编辑
-    if (bookinfo) {
-      this.bookInfo = JSON.parse(JSON.stringify(bookinfo))
-      this.bookInfo.label = JSON.parse(this.bookInfo.label)
-    }
+
+    this.init()
   },
   methods: {
     ...mapActions([
       'RegisterBook',
-      'UpdateBook'
+      'UpdateBook',
+      'GetClassifyList'
     ]),
+    init () {
+      let { bookinfo, type } = this.$route.params
+      this.useType = type
+      // 新建/编辑
+      if (bookinfo) {
+        this.bookInfo = JSON.parse(JSON.stringify(bookinfo))
+        this.bookInfo.label = JSON.parse(this.bookInfo.label)
+      }
+
+      this.GetClassifyList()
+    },
     // 新增小说
     handleRegisterBook () {
       console.log(this.bookInfo)
@@ -168,7 +175,9 @@ export default {
     // 重新上传图片
     handleRestartUpload () {
       this.fileList = []
-    }
+    },
+    // 选择分类
+    handleChangeClassify () {}
   }
 }
 </script>

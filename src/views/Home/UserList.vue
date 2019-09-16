@@ -5,6 +5,8 @@
       <ul>
         <li v-for="user in userList" :key="user._id">
           <p>{{user.name}}</p>
+          <el-button type="text" size="small" @click="handleDeleteUser(user)">删除</el-button>
+          <el-button type="text" size="small" @click="handleStartEditUser(user)">编辑</el-button>
         </li>
       </ul>
     </div>
@@ -27,8 +29,32 @@ export default {
   },
   methods: {
     ...mapActions([
-      'GetUserList'
-    ])
+      'GetUserList',
+      'DeleteUser'
+    ]),
+    // 删除用户
+    handleDeleteUser (user) {
+      this.$confirm('确定删除用户吗?', '提示', {
+        type: 'warning'
+      })
+        .then(() => {
+          this.DeleteUser(user._id)
+            .then(data => {
+              this.$message({
+                type: 'success',
+                message: '删除用户成功!'
+              })
+              this.GetUserList()
+            })
+        })
+        .catch(() => {
+          console.log('取消删除用户!')
+        })
+    },
+    // 开始编辑用户信息
+    handleStartEditUser (user) {
+      this.$router.push({name: 'UserInfo', params: { userInfo: user, useType: 'edit' }})
+    }
   }
 }
 </script>

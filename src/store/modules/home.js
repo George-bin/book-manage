@@ -7,7 +7,9 @@ import {
   deleteBookRequest,
   getClassifyListRequest,
   registerUserRequest,
-  getUserListRequest
+  getUserListRequest,
+  deleteUserRequest,
+  updateUserInfoRequest
 } from '../../api/home'
 
 const home = {
@@ -140,6 +142,30 @@ const home = {
         registerUserRequest(data)
           .then(response => {
             resolve(response)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    // 更新用户信息
+    UpdateUserInfo ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        updateUserInfoRequest(data)
+          .then(response => {
+            resolve(response.data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    // 删除用户
+    DeleteUser ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        deleteUserRequest(data)
+          .then(response => {
+            resolve(response.data)
           })
           .catch(err => {
             reject(err)

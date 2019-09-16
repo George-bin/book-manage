@@ -74,3 +74,20 @@ export function registerUserRequest (data) {
     data: data
   })
 }
+
+// 删除用户
+export function deleteUserRequest (_id) {
+  return request({
+    url: `/deleteUser/${_id}`,
+    method: 'delete'
+  })
+}
+
+// 更新用户
+export function updateUserInfoRequest (data) {
+  return request({
+    url: `/updateUserInfo/${data._id}`,
+    method: 'put',
+    data: data
+  })
+}

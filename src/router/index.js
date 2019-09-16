@@ -104,7 +104,18 @@ router.beforeEach((to, from, next) => {
       })
     }
   } else {
-    next()
+    if (to.path === '/login') {
+      if (getCookie('usr')) {
+        next({
+          path: '/'
+        })
+      } else {
+        // 未登录,跳转到登陆页面
+        next()
+      }
+    } else {
+      next()
+    }
   }
 })
 
