@@ -1,5 +1,5 @@
 'use strict'
 
 module.exports = {
-  BASE_API: 'http://www.gengshaobin.top:8888'
+  BASE_API: 'https://www.gengshaobin.top'
 }
