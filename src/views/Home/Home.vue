@@ -1,9 +1,7 @@
 <template>
   <div class="home-main-component">
     <!--头部-->
-    <header class="main-header">
-      <h1 class="main-title">个人小说管理平台</h1>
-    </header>
+    <main-header></main-header>
     <div class="main-container">
       <!--左侧导航-->
       <left-nav></left-nav>
@@ -17,33 +15,27 @@
 <script>
 export default {
   components: {
-    LeftNav: require('@/components/LeftNav').default
+    MainHeader: () => import('@/components/Book/MainHeader'),
+    LeftNav: () => import('@/components/Book/LeftNav')
+    // LeftNav: () => import('@/components/LeftNav')
+  },
+  data () {
+    return {}
+  },
+  methods: {
   }
 }
 </script>
 
 <style lang="scss">
+  body, html {
+    background: #f0f0f0;
+  }
   .home-main-component {
-    .main-header {
-      height: 70px;
-      background: #4bb8c5;
-      .main-title {
-        /*max-width: 1200px;*/
-        line-height: 70px;
-        padding: 0 20px;
-        margin: 0 auto;
-        font-size: 22px;
-        font-weight: normal;
-        letter-spacing: 4px;
-        color: white;
-      }
-    }
     .main-container {
-      display: flex;
       .content-section {
-        flex: 1;
-        height: calc(100vh - 70px);
-        overflow: auto;
+        // height: calc(100vh - 50px);
+        // overflow: auto;
         /*滚动条整体样式*/
         &::-webkit-scrollbar {
           width: 4px; /*高宽分别对应横竖滚动条的尺寸*/

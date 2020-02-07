@@ -2,33 +2,31 @@ import {
   registerBookRequest,
   getBookListRequest,
   updateBookRequest,
-  registerClassifyRequest,
-  updateClassifyRequest,
   deleteBookRequest,
-  getClassifyListRequest,
   registerUserRequest,
   getUserListRequest,
   deleteUserRequest,
-  updateUserInfoRequest
-} from '../../api/home'
+  updateUserInfoRequest,
+  getBookInfoByIdRequest
+} from '../../api/book'
 
 const home = {
   state: {
     // 当前小说分类id
     activeClassifyId: '',
-    // 小说分类列表
-    classifyList: [],
     // 用户列表
     userList: [],
     // 当前分类的小说列表
-    bookList: []
+    bookList: [],
+    // 书籍筛选
+    bookScreen: {
+      classifyId: 'all',
+      labelId: 'all'
+    }
   },
   mutations: {
     SET_ACTIVE_CLASSIFY_ID (state, data) {
       state.activeClassifyId = data
-    },
-    SET_CLASSIFY_LIST (state, data) {
-      state.classifyList = data
     },
     SET_USER_LIST (state, data) {
       state.userList = data
@@ -44,6 +42,18 @@ const home = {
         getBookListRequest(data)
           .then(response => {
             commit('SET_BOOK_LIST', response.data.bookList)
+            resolve(response.data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    // 根据id获取小说信息
+    GetBookInfoById ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        getBookInfoByIdRequest(data)
+          .then(response => {
             resolve(response.data)
           })
           .catch(err => {
@@ -79,41 +89,6 @@ const home = {
     DeleteBook ({ commit }, data) {
       return new Promise((resolve, reject) => {
         deleteBookRequest(data)
-          .then(response => {
-            resolve(response)
-          })
-          .catch(err => {
-            reject(err)
-          })
-      })
-    },
-    // 获取分类列表
-    GetClassifyList ({ commit }) {
-      return new Promise((resolve, reject) => {
-        getClassifyListRequest()
-          .then(response => {
-            console.log('分类列表', response.data)
-            commit('SET_CLASSIFY_LIST', response.data.classifyList)
-            resolve(response.data)
-          })
-      })
-    },
-    // 新增分类
-    RegisterClassify ({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        registerClassifyRequest(data)
-          .then(response => {
-            resolve(response)
-          })
-          .catch(err => {
-            reject(err)
-          })
-      })
-    },
-    // 更新分类
-    UpdateClassify ({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        updateClassifyRequest(data)
           .then(response => {
             resolve(response)
           })
