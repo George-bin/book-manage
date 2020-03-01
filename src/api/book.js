@@ -26,7 +26,7 @@ export function registerBookRequest (data) {
 // 更新书籍
 export function updateBookRequest (data) {
   return request({
-    url: '/updateBookInfo',
+    url: '/',
     method: 'put',
     data: data
   })
@@ -37,6 +37,15 @@ export function deleteBookRequest (bookId) {
   return request({
     url: `/delete/${bookId}`,
     method: 'delete'
+  })
+}
+
+// 条件筛选（分页处理）
+export function getScreenBookListRequest (data) {
+  return request({
+    url: '/screen',
+    method: 'get',
+    params: data
   })
 }
 

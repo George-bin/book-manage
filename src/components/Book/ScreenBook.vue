@@ -10,7 +10,7 @@
             'height': classifyUnfold ? 'auto' : '46px'
           }">
           <li
-            v-for="item in classifyList"
+            v-for="item in classifyListComputed"
             :key="item._id"
             class="value-item">
             <span
@@ -18,7 +18,8 @@
                 border: bookScreen.classifyId === item.id ? '1px solid #9e9e9e' : '',
                 color: bookScreen.classifyId === item.id ? '#fff' : '#9e9e9e',
                 background: bookScreen.classifyId === item.id ? '#9e9e9e' : 'none'
-              }">
+              }"
+              @click="handleSelectScreenClassify(item)">
               {{item.name}}
             </span>
           </li>
@@ -39,15 +40,16 @@
         <span class="label">标签</span>
         <ul class="value-list">
           <li
-            v-for="item in labelList"
+            v-for="item in labelListComputed"
             :key="item._id"
             class="value-item">
             <span
               :style="{
-                border: bookScreen.classifyId === item.id ? '1px solid #9e9e9e' : '',
-                color: bookScreen.classifyId === item.id ? '#fff' : '#9e9e9e',
-                background: bookScreen.classifyId === item.id ? '#9e9e9e' : 'none'
-              }">
+                border: bookScreen.labelId === item.id ? '1px solid #9e9e9e' : '',
+                color: bookScreen.labelId === item.id ? '#fff' : '#9e9e9e',
+                background: bookScreen.labelId === item.id ? '#9e9e9e' : 'none'
+              }"
+              @click="handleSelectScreenLabel(item)">
               {{item.name}}
             </span>
           </li>
@@ -58,7 +60,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 // 分类 标签
 export default {
   name: '',
@@ -75,21 +77,60 @@ export default {
       bookScreen: state => state.book.bookScreen,
       classifyList: state => state.classify.classifyList,
       labelList: state => state.label.labelList
-    })
+    }),
+    classifyListComputed () {
+      let arr = JSON.parse(JSON.stringify(this.classifyList))
+      arr.unshift({
+        _id: 'all',
+        id: 'all',
+        name: '全部'
+      })
+      return arr
+    },
+    labelListComputed () {
+      let arr = JSON.parse(JSON.stringify(this.labelList))
+      arr.unshift({
+        _id: 'all',
+        id: 'all',
+        name: '全部'
+      })
+      return arr
+    }
   },
-  watch: {},
+  watch: {
+    bookScreen: function (val, oldval) {
+      this.GetScreenBookList(val)
+    }
+  },
   created () {},
   mounted () {
     this.init()
   },
   methods: {
+    ...mapMutations([
+      'SET_BOOK_SCREEN'
+    ]),
     ...mapActions([
       'GetLabelList',
-      'GetClassifyList'
+      'GetClassifyList',
+      'GetScreenBookList'
     ]),
     init () {
       this.GetLabelList()
       this.GetClassifyList()
+      this.GetScreenBookList(this.bookScreen)
+    },
+    // 筛选条件：classify
+    handleSelectScreenClassify (item) {
+      let screen = JSON.parse(JSON.stringify(this.bookScreen))
+      screen.classifyId = item.id
+      this.SET_BOOK_SCREEN(screen)
+    },
+    // 筛选条件：label
+    handleSelectScreenLabel (item) {
+      let screen = JSON.parse(JSON.stringify(this.bookScreen))
+      screen.labelId = item.id
+      this.SET_BOOK_SCREEN(screen)
     }
   }
 }

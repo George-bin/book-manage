@@ -26,11 +26,6 @@ const classify = {
             let { errcode, classifyList } = response.data
             if (errcode === 0) {
               classifyList = JSON.parse(JSON.stringify(classifyList))
-              classifyList.unshift({
-                _id: 'all',
-                id: 'all',
-                name: '全部'
-              })
               commit('SET_CLASSIFY_LIST', classifyList)
             }
             resolve(response.data)

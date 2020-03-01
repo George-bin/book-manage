@@ -1,21 +1,5 @@
 <template>
   <div class="book-list-main-component">
-    <!--搜索/切换分类-->
-    <!-- <div class="">
-      <el-select
-        v-model="classifyId"
-        size="small"
-        placeholder="请选择分类"
-        @change="handleChangeClassify">
-        <el-option
-          v-for="item in classifyList"
-          :key="item._id"
-          :label="item.name"
-          :value="item.id">
-        </el-option>
-      </el-select>
-    </div> -->
-
     <!-- 筛选组件 -->
     <screen-book></screen-book>
 
@@ -47,10 +31,7 @@ export default {
     ScreenBook: () => import('@/components/Book/ScreenBook')
   },
   data () {
-    return {
-      // 当前分类id
-      classifyId: ''
-    }
+    return {}
   },
   computed: {
     ...mapState({
@@ -60,32 +41,15 @@ export default {
     })
   },
   mounted () {
-    this.init()
+    // this.init()
   },
   methods: {
-    ...mapMutations([
-      'SET_ACTIVE_CLASSIFY_ID'
-    ]),
+    ...mapMutations([]),
     ...mapActions([
-      'GetBookList',
       'DeleteBook',
       'GetClassifyList'
     ]),
-    init () {
-      if (!this.activeClassifyId) {
-        this.GetClassifyList()
-          .then(data => {
-            if (this.classifyList.length) {
-              this.GetBookList(this.classifyList[0].id)
-              this.classifyId = this.classifyList[0].id
-              this.SET_ACTIVE_CLASSIFY_ID(this.classifyList[0].id)
-            }
-          })
-      } else {
-        this.classifyId = this.activeClassifyId
-        this.GetBookList(this.classifyId)
-      }
-    },
+    init () {},
     // 前往编辑
     handleGoEdit (item) {
       this.$router.push('/book/edit')
@@ -118,7 +82,6 @@ export default {
         })
     },
     handleChangeClassify (classifyId) {
-      this.SET_ACTIVE_CLASSIFY_ID(classifyId)
       this.GetBookList(classifyId)
     }
   }
@@ -131,6 +94,7 @@ export default {
     padding: 20px 40px;
     margin: 10px auto;
     background: #fff;
+    border-radius: 4px;
     .book-list-section {
       margin-top: 20px;
       border-radius: 4px;

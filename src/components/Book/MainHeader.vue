@@ -89,6 +89,7 @@ export default {
   color: #333;
   // background: #4bb8c5;
   background: #fff;
+  border-bottom: 1px solid #dfdfdf;
   // box-shadow: 0 5px 5px #dfdfdf;
   .main-header-box {
     display: flex;

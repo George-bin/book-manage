@@ -138,15 +138,15 @@ export default {
 <style lang="scss">
   .classify-list-component {
     position: relative;
-    width: 960px;
+    width: 920px;
     margin: 10px auto;
-    padding: 20px;
+    padding: 20px 40px;
     background: #fff;
-    border-radius: 8px;
+    border-radius: 4px;
     .add-classify-btn {
       position: absolute;
       top: 15px;
-      right: 20px;
+      right: 40px;
     }
     .classify-list-title {
       height: 70px;

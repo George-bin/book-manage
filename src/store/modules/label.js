@@ -24,11 +24,6 @@ const label = {
             let { errcode, labelList } = response.data
             if (errcode === 0) {
               labelList = JSON.parse(JSON.stringify(labelList))
-              labelList.unshift({
-                _id: 'all',
-                id: 'all',
-                name: '全部'
-              })
               commit('SET_LABEL_LIST', labelList)
             }
             resolve(response.data)

@@ -128,11 +128,11 @@ export default {
 <style lang="scss">
 .label-component {
   position: relative;
-  width: 960px;
+  width: 920px;
   margin: 10px auto;
-  padding: 20px;
+  padding: 20px 40px;
   background: #fff;
-  border-radius: 8px;
+  border-radius: 4px;
   .add-label-btn {
     position: absolute;
     top: 15px;

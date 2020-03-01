@@ -37,7 +37,8 @@
           <el-checkbox
             v-for="item in labelList"
             :key="item._id"
-            :label="item.name">
+            :label="item.id">
+            {{item.name}}
           </el-checkbox>
         </el-checkbox-group>
       </el-form-item>
@@ -210,6 +211,7 @@ export default {
     },
     // 更新小说
     handleUpdateBook () {
+      // console.log('bookInfo', this.bookInfo)
       this.loading = true
       this.UpdateBook(this.bookInfo)
         .then(data => {

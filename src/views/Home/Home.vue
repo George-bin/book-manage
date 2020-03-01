@@ -34,7 +34,7 @@ export default {
   .home-main-component {
     .main-container {
       .content-section {
-        // height: calc(100vh - 50px);
+        // height: calc(100vh - 70px);
         // overflow: auto;
         /*滚动条整体样式*/
         &::-webkit-scrollbar {
