@@ -1,20 +1,10 @@
 <template>
   <div class="book-list-main-component">
-    <el-button class="create-book-btn" type="text" size="small" @click="handleGoAdd">新建</el-button>
-    <!--搜索/切换分类-->
-    <div class="">
-      <el-select v-model="classifyId" placeholder="请选择" @change="handleChangeClassify">
-        <el-option
-          v-for="item in classifyList"
-          :key="item._id"
-          :label="item.classifyName"
-          :value="item.classifyId">
-        </el-option>
-      </el-select>
-    </div>
+    <!-- 筛选组件 -->
+    <screen-book></screen-book>
 
     <!--当前分类小说列表-->
-    <ul class="book-list">
+    <ul class="book-list-section">
       <li
         v-for="book in bookList"
         :key="book._id"
@@ -37,53 +27,33 @@
 <script>
 import { mapMutations, mapActions, mapState } from 'vuex'
 export default {
+  components: {
+    ScreenBook: () => import('@/components/Book/ScreenBook')
+  },
   data () {
-    return {
-      // 当前分类id
-      classifyId: ''
-    }
+    return {}
   },
   computed: {
     ...mapState({
-      classifyList: state => state.home.classifyList,
-      bookList: state => state.home.bookList,
-      activeClassifyId: state => state.home.activeClassifyId
+      classifyList: state => state.classify.classifyList,
+      bookList: state => state.book.bookList,
+      activeClassifyId: state => state.book.activeClassifyId
     })
   },
   mounted () {
-    this.init()
+    // this.init()
   },
   methods: {
-    ...mapMutations([
-      'SET_ACTIVE_CLASSIFY_ID'
-    ]),
+    ...mapMutations([]),
     ...mapActions([
-      'GetBookList',
       'DeleteBook',
       'GetClassifyList'
     ]),
-    init () {
-      if (!this.activeClassifyId) {
-        this.GetClassifyList()
-          .then(data => {
-            if (this.classifyList.length) {
-              this.GetBookList(this.classifyList[0].classifyId)
-              this.classifyId = this.classifyList[0].classifyId
-              this.SET_ACTIVE_CLASSIFY_ID(this.classifyList[0].classifyId)
-            }
-          })
-      } else {
-        this.classifyId = this.activeClassifyId
-        this.GetBookList(this.classifyId)
-      }
-    },
-    // 新建
-    handleGoAdd (item) {
-      this.$router.push({name: 'BookInfo', params: { type: 'add' }})
-    },
+    init () {},
     // 前往编辑
     handleGoEdit (item) {
-      this.$router.push({name: 'BookInfo', params: { bookinfo: item, type: 'edit' }})
+      this.$router.push('/book/edit')
+      sessionStorage.setItem('book_id', item._id)
     },
     // 删除书籍
     handleDeleteBook (book) {
@@ -97,6 +67,14 @@ export default {
                 type: 'success',
                 message: '删除小说成功!'
               })
+              this.GetClassifyList()
+            })
+            .catch(err => {
+              this.$message({
+                type: 'error',
+                message: '删除小说失败!'
+              })
+              console.log('删除小说失败', err)
             })
         })
         .catch(() => {
@@ -104,7 +82,6 @@ export default {
         })
     },
     handleChangeClassify (classifyId) {
-      this.SET_ACTIVE_CLASSIFY_ID(classifyId)
       this.GetBookList(classifyId)
     }
   }
@@ -113,18 +90,14 @@ export default {
 
 <style lang="scss">
   .book-list-main-component {
-    padding: 10px 40px;
-    .create-book-btn {
-      position: fixed;
-      bottom: 40px;
-      right: 40px;
-      width: 40px;
-      height: 40px;
-      color: white;
-      background: #4bb8c5;
-    }
-    .book-list {
+    width: 920px;
+    padding: 20px 40px;
+    margin: 10px auto;
+    background: #fff;
+    border-radius: 4px;
+    .book-list-section {
       margin-top: 20px;
+      border-radius: 4px;
       .book-list-item {
         display: flex;
         .book-cover {

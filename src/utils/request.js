@@ -1,5 +1,7 @@
 import axios from 'axios'
 import config from '../config'
+import { Message } from 'element-ui'
+import router from '../router'
 
 // 创建axios实例
 const service = axios.create({
@@ -23,6 +25,21 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
   response => {
+    let { errcode } = response.data
+    let hash = location.hash
+    switch (errcode) {
+      case 991:
+        if (hash !== '#/login') {
+          Message({
+            type: 'warning',
+            message: '用户登录态失效!'
+          })
+        }
+        sessionStorage.removeItem('auth')
+        router.push('/login')
+        break
+      default:
+    }
     return response
   },
   error => {

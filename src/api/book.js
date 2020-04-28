@@ -1,10 +1,16 @@
 import request from '../utils/request'
 
-// 获取小说列表
+// 根据id获取书籍信息
+export function getBookInfoByIdRequest (id) {
+  return request({
+    url: `/info/${id}`
+  })
+}
+
+// 根据分类id获取小说列表
 export function getBookListRequest (classifyId) {
   return request({
-    url: `/list/${classifyId}`,
-    method: 'get'
+    url: `/list/${classifyId}`
   })
 }
 
@@ -20,7 +26,7 @@ export function registerBookRequest (data) {
 // 更新书籍
 export function updateBookRequest (data) {
   return request({
-    url: '/updateBookInfo',
+    url: '/',
     method: 'put',
     data: data
   })
@@ -34,28 +40,12 @@ export function deleteBookRequest (bookId) {
   })
 }
 
-// 获取分类列表
-export function getClassifyListRequest () {
+// 条件筛选（分页处理）
+export function getScreenBookListRequest (data) {
   return request({
-    url: '/classifyList'
-  })
-}
-
-// 新增分类
-export function registerClassifyRequest (data) {
-  return request({
-    url: '/registerClassify',
-    method: 'post',
-    data: data
-  })
-}
-
-// 更新分类
-export function updateClassifyRequest (data) {
-  return request({
-    url: '/updateClassify',
-    method: 'put',
-    data: data
+    url: '/screen',
+    method: 'get',
+    params: data
   })
 }
 

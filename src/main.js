@@ -6,9 +6,18 @@ import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import '../static/theme/index.css'
+
+import '../static/css/iconfont/iconfont.css'
 
 // 初始化css
 import './assets/css/init.css'
+
+// 引入moment
+import moment from 'moment'
+Vue.prototype.$moment = moment
+moment.locale('zh-cn')
+
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false

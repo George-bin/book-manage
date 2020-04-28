@@ -1,6 +1,5 @@
 <template>
   <div class="book-info-main-component">
-    <h2 class="book-info-title">书籍信息</h2>
     <el-form>
       <el-form-item label="书籍名称">
         <el-input v-model="bookInfo.bookName" placeholder="请输入书籍名称!"></el-input>
@@ -16,8 +15,8 @@
           <el-option
             v-for="item in classifyList"
             :key="item._id"
-            :label="item.classifyName"
-            :value="item.classifyId">
+            :label="item.name"
+            :value="item.id">
           </el-option>
         </el-select>
       </el-form-item>
@@ -35,10 +34,12 @@
       </el-form-item>
       <el-form-item label="标签">
         <el-checkbox-group v-model="bookInfo.label">
-          <el-checkbox label="黑道"></el-checkbox>
-          <el-checkbox label="都市"></el-checkbox>
-          <el-checkbox label="玄幻"></el-checkbox>
-          <el-checkbox label="修真"></el-checkbox>
+          <el-checkbox
+            v-for="item in labelList"
+            :key="item._id"
+            :label="item.id">
+            {{item.name}}
+          </el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="书籍简介">
@@ -49,8 +50,9 @@
           <el-input v-model="bookInfo.bookCover" disabled></el-input>
           <el-upload
             class="upload-demo"
-            :action="`${config.env.BASE_API}/api/book/uploadfile/bookCover`"
+            :action="`${config.env.BASE_API}/api/book/upload/img`"
             multiple
+            :with-credentials="true"
             :data="{ oldFilePath: bookInfo.bookCover }"
             :on-success="onUploadFileSuccess"
             :show-file-list="false"
@@ -62,7 +64,7 @@
         <el-upload
           v-else
           class="upload-demo"
-          :action="`${config.env.BASE_API}/api/book/uploadfile/bookCover`"
+          :action="`${config.env.BASE_API}/api/book/upload/img`"
           multiple
           :on-success="onUploadFileSuccess"
           :show-file-list="false"
@@ -71,9 +73,14 @@
           <el-button size="small" type="primary" class="upload-btn">点击上传</el-button>
         </el-upload>
       </el-form-item>
-      <el-form-item style="text-align: center">
-        <el-button v-if="useType === 'add' || !useType" @click="handleRegisterBook" class="submit-btn" type="primary">提交</el-button>
-        <el-button v-else @click="handleUpdateBook" class="submit-btn" type="primary">更新</el-button>
+      <el-form-item style="margin-left: 80px">
+        <el-button
+          v-if="useType === 'add' || !useType"
+          :loading="loading"
+          @click="handleRegisterBook"
+          class="submit-btn"
+          type="primary">提交</el-button>
+        <el-button v-else :loading="loading" @click="handleUpdateBook" class="submit-btn" type="primary">更新</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -83,6 +90,20 @@
 import { mapActions, mapState } from 'vuex'
 import config from '../../config'
 export default {
+  props: {
+    title: {
+      type: String,
+      default: '书籍信息'
+    },
+    useType: {
+      type: String,
+      default: 'add'
+    },
+    bookId: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
       bookInfo: {
@@ -105,61 +126,116 @@ export default {
       },
       fileList: [],
       config: config,
-      useType: 'add'
+      loading: false
     }
   },
   computed: {
     ...mapState({
-      bookList: state => state.home.bookList,
-      classifyList: state => state.home.classifyList
+      classifyList: state => state.classify.classifyList,
+      labelList: state => state.label.labelList
     })
   },
   watch: {
     'bookInfo.label': function (val, oldval) {
-      console.log(val)
-    },
-    'bookInfo.classify': function (val, oldval) {
-      console.log(val)
+      console.log('label', val)
     }
   },
   created () {
-    console.log(this.$route)
+    // console.log(this.$route)
   },
   mounted () {
-    // console.log('this.$route.params.bookinfo', this.$route.params.bookinfo)
-
     this.init()
   },
   methods: {
     ...mapActions([
       'RegisterBook',
       'UpdateBook',
-      'GetClassifyList'
+      'GetClassifyList',
+      'GetBookInfoById',
+      'GetLabelList'
     ]),
     init () {
-      let { bookinfo, type } = this.$route.params
-      this.useType = type
-      // 新建/编辑
-      if (bookinfo) {
-        this.bookInfo = JSON.parse(JSON.stringify(bookinfo))
-        this.bookInfo.label = JSON.parse(this.bookInfo.label)
+      // 编辑小说
+      if (this.useType === 'edit') {
+        let bookId = sessionStorage.getItem('book_id')
+        this.GetBookInfoById(bookId)
+          .then(data => {
+            let { errcode, message, bookInfo } = data
+            if (errcode === 0) {
+              this.bookInfo = JSON.parse(JSON.stringify(bookInfo))
+            } else {
+              this.$message({
+                type: 'warning',
+                message
+              })
+              this.$router.back()
+            }
+          })
+          .catch(err => {
+            console.log('获取书籍信息失败!', err)
+            this.$router.back()
+          })
       }
-
       this.GetClassifyList()
+      this.GetLabelList()
     },
     // 新增小说
     handleRegisterBook () {
       console.log(this.bookInfo)
+      this.loading = true
       this.RegisterBook(this.bookInfo)
-        .then(data => {})
+        .then(data => {
+          this.loading = false
+          let { errcode, message } = data
+          if (errcode === 0) {
+            this.$message({
+              type: 'success',
+              message: '新增小说成功!'
+            })
+            this.handleInitBookInfo()
+          } else {
+            this.$message({
+              type: 'warning',
+              message: message
+            })
+          }
+        })
+        .catch(err => {
+          this.loading = false
+          console.log('新增小说失败', err)
+          this.$message({
+            type: 'error',
+            message: '新增小说失败!'
+          })
+        })
     },
-    // 更新
+    // 更新小说
     handleUpdateBook () {
+      // console.log('bookInfo', this.bookInfo)
+      this.loading = true
       this.UpdateBook(this.bookInfo)
         .then(data => {
+          this.loading = false
+          let { errcode, message } = data
+          if (errcode === 0) {
+            this.$message({
+              type: 'success',
+              message: '更新成功!'
+            })
+            this.$router.back()
+          } else {
+            this.$message({
+              type: 'warning',
+              message
+            })
+          }
+        })
+        .catch(err => {
+          console.error('小说信息更新失败', err)
+          this.loading = false
           this.$message({
-            type: 'success',
-            message: '更新成功!'
+            type: 'error',
+            message: '更新失败!'
           })
         })
     },
@@ -177,15 +253,33 @@ export default {
       this.fileList = []
     },
     // 选择分类
-    handleChangeClassify () {}
+    handleChangeClassify () {},
+    handleInitBookInfo () {
+      this.bookInfo = {
+        bookName: '',
+        author: '',
+        bookId: '',
+        bookCover: '',
+        sectionCount: '',
+        bookIntro: '',
+        // 人气指数
+        popularityIndex: 0,
+        // 评分
+        grade: 0,
+        // 点赞
+        like: 0,
+        // 标签
+        label: [],
+        // 分类
+        classify: ''
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss">
   .book-info-main-component {
-    width: 400px;
-    margin: 0 auto;
     .book-info-title {
       height: 70px;
       line-height: 70px;
