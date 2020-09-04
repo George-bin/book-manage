@@ -15,6 +15,7 @@
           <p class="book-author">作者: {{book.author}}</p>
           <p class="book-intro">简介: {{book.bookIntro}}</p>
           <div class="book-btn-group">
+            <el-button @click="handleGoShowCatalog(book)" type="text" size="small">目录</el-button>
             <el-button @click="handleGoEdit(book)" type="text" size="small">编辑</el-button>
             <el-button @click="handleDeleteBook(book)" type="text" size="small">删除</el-button>
           </div>
@@ -83,16 +84,16 @@ export default {
     },
     handleChangeClassify (classifyId) {
       this.GetBookList(classifyId)
-    }
+    },
+    // 目录
+    handleGoShowCatalog () {}
   }
 }
 </script>
 
 <style lang="scss">
   .book-list-main-component {
-    width: 920px;
     padding: 20px 40px;
-    margin: 10px auto;
     background: #fff;
     border-radius: 4px;
     .book-list-section {

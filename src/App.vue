@@ -7,8 +7,10 @@
 <script>
 export default {
   name: 'App',
-  methods: {}
+  methods: {
+  }
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+</style>

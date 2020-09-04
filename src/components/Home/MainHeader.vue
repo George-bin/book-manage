@@ -86,16 +86,20 @@ export default {
 
 <style lang="scss">
 .main-header-component {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   color: #333;
-  // background: #4bb8c5;
   background: #fff;
   border-bottom: 1px solid #dfdfdf;
-  // box-shadow: 0 5px 5px #dfdfdf;
+  // box-shadow: 0 5px 5px #f1f1f1;
+  z-index: 999;
   .main-header-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 1000px;
+    max-width: 1000px;
     height: 68px;
     margin: 0 auto;
     .left {
@@ -103,8 +107,8 @@ export default {
       align-items: center;
       height: 50px;
       .logo {
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
       }
       .main-title {
         margin-left: 5px;
@@ -117,6 +121,14 @@ export default {
       width: 120px;
       text-align: right;
       color: #333;
+    }
+  }
+}
+@media screen and (max-width: 1160px) {
+  .main-header-component {
+    .main-header-box {
+      max-width: 99999px;
+      margin: 0 10px;
     }
   }
 }

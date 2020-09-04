@@ -15,12 +15,12 @@
             class="value-item">
             <span
               :style="{
-                border: bookScreen.classifyId === item.id ? '1px solid #9e9e9e' : '',
-                color: bookScreen.classifyId === item.id ? '#fff' : '#9e9e9e',
-                background: bookScreen.classifyId === item.id ? '#9e9e9e' : 'none'
+                border: bookScreen.classifyId === item._id ? '1px solid #9e9e9e' : '',
+                color: bookScreen.classifyId === item._id ? '#fff' : '#9e9e9e',
+                background: bookScreen.classifyId === item._id ? '#9e9e9e' : 'none'
               }"
               @click="handleSelectScreenClassify(item)">
-              {{item.name}}
+              {{item.classifyName}}
             </span>
           </li>
         </ul>
@@ -82,8 +82,7 @@ export default {
       let arr = JSON.parse(JSON.stringify(this.classifyList))
       arr.unshift({
         _id: 'all',
-        id: 'all',
-        name: '全部'
+        classifyName: '全部'
       })
       return arr
     },
@@ -123,7 +122,7 @@ export default {
     // 筛选条件：classify
     handleSelectScreenClassify (item) {
       let screen = JSON.parse(JSON.stringify(this.bookScreen))
-      screen.classifyId = item.id
+      screen.classifyId = item._id
       this.SET_BOOK_SCREEN(screen)
     },
     // 筛选条件：label

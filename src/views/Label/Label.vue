@@ -128,8 +128,6 @@ export default {
 <style lang="scss">
 .label-component {
   position: relative;
-  width: 920px;
-  margin: 10px auto;
   padding: 20px 40px;
   background: #fff;
   border-radius: 4px;

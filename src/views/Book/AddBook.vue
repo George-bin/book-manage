@@ -27,8 +27,6 @@ export default {
 
 <style lang="scss">
 .add-book-component {
-  width: 920px;
-  margin: 10px auto;
   padding: 20px 40px;
   background: #fff;
   border-radius: 4px;

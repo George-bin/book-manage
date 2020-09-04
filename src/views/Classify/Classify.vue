@@ -25,13 +25,13 @@
           width="50">
         </el-table-column>
         <el-table-column
-          prop="id"
-          label="分类id">
+          prop="_id"
+          label="id">
         </el-table-column>
         <el-table-column
           label="分类名称">
           <template slot-scope="{row}">
-            <el-tag>{{row.name}}</el-tag>
+            <el-tag>{{row.classifyName}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
@@ -136,23 +136,21 @@ export default {
 </script>
 
 <style lang="scss">
-  .classify-list-component {
-    position: relative;
-    width: 920px;
-    margin: 10px auto;
-    padding: 20px 40px;
-    background: #fff;
-    border-radius: 4px;
-    .add-classify-btn {
-      position: absolute;
-      top: 15px;
-      right: 40px;
-    }
-    .classify-list-title {
-      height: 70px;
-      line-height: 70px;
-      font-size: 22px;
-      text-align: center;
-    }
+.classify-list-component {
+  position: relative;
+  padding: 20px 40px;
+  background: #fff;
+  border-radius: 4px;
+  .add-classify-btn {
+    position: absolute;
+    top: 15px;
+    right: 40px;
   }
+  .classify-list-title {
+    height: 70px;
+    line-height: 70px;
+    font-size: 22px;
+    text-align: center;
+  }
+}
 </style>

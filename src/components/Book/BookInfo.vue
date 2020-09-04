@@ -15,8 +15,8 @@
           <el-option
             v-for="item in classifyList"
             :key="item._id"
-            :label="item.name"
-            :value="item.id">
+            :label="item.classifyName"
+            :value="item._id">
           </el-option>
         </el-select>
       </el-form-item>

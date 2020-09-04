@@ -50,6 +50,14 @@ const router = new Router({
           }
         },
         {
+          path: 'catalog',
+          name: 'Book',
+          component: () => import('@/views/Book/Book'),
+          meta: {
+            requireAuth: true
+          }
+        },
+        {
           path: 'add',
           name: 'AddBook',
           component: AddBook,
