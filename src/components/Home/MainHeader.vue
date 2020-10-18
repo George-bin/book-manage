@@ -53,30 +53,32 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          this.Logout()
-            .then(data => {
-              let { errcode, message } = data
-              if (errcode === 0) {
-                this.$message({
-                  type: 'success',
-                  message: '注销成功!'
-                })
-                sessionStorage.removeItem('auth')
-                this.$router.push('/login')
-              } else {
-                this.$message({
-                  type: 'warning',
-                  message: message
-                })
-              }
-            })
-            .catch(err => {
-              console.log('注销失败', err)
-              this.$message({
-                type: 'error',
-                message: '注销失败!'
-              })
-            })
+          sessionStorage.removeItem('auth')
+          this.$router.push('/login')
+          // this.Logout()
+          //   .then(data => {
+          //     let { errcode, message } = data
+          //     if (errcode === 0) {
+          //       this.$message({
+          //         type: 'success',
+          //         message: '注销成功!'
+          //       })
+          //       sessionStorage.removeItem('auth')
+          //       this.$router.push('/login')
+          //     } else {
+          //       this.$message({
+          //         type: 'warning',
+          //         message: message
+          //       })
+          //     }
+          //   })
+          //   .catch(err => {
+          //     console.log('注销失败', err)
+          //     this.$message({
+          //       type: 'error',
+          //       message: '注销失败!'
+          //     })
+          //   })
         })
         .catch(() => {})
     }
@@ -93,6 +95,7 @@ export default {
   color: #333;
   background: #fff;
   border-bottom: 1px solid #dfdfdf;
+  box-shadow: 0 0 10px #dfdfdf;
   // box-shadow: 0 5px 5px #f1f1f1;
   z-index: 999;
   .main-header-box {

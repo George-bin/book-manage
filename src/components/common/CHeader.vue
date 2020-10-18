@@ -1,13 +1,11 @@
 <template>
   <header class="back-component">
     <div class="back-box">
-      <span v-if="backBtn" class="back-btn" @click="handleClickGoBack">
-        <i class="el-icon-back"></i>
-        返回
-      </span>
-      <h2 :style="{
-        'margin-left': backBtn ? '10px' : '0'
-      }">{{title}}</h2>
+      <h2>{{title}}</h2>
+      <div class="btn-group">
+        <slot name="btnGroup"></slot>
+        <el-button v-if="backBtn" @click="handleClickGoBack" type="warning" size="small">返回</el-button>
+      </div>
     </div>
   </header>
 </template>
@@ -45,6 +43,8 @@ export default {
 .back-component {
   .back-box {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding-bottom: 5px;
     border-bottom: 1px solid #dfdfdf;
     font-size: 14px;

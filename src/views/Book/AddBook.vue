@@ -2,7 +2,8 @@
   <div class="add-book-component">
     <m-header title="新增小说" :back-btn="false"></m-header>
     <br>
-    <book-info title="新增小说" use-type="add"></book-info>
+    <book-info title="新增小说" use-type="add">
+    </book-info>
   </div>
 </template>
 
@@ -11,8 +12,8 @@ export default {
   name: '',
   props: {},
   components: {
-    MHeader: () => import('@/components/Public/MHeader'),
-    BookInfo: () => import('@/components/Book/BookInfo')
+    MHeader: () => import('@/components/common/CHeader'),
+    BookInfo: () => import('@/components/book/BookInfo')
   },
   data () {
     return {}

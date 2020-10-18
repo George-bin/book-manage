@@ -10,7 +10,7 @@
         </header>
         <div class="login-form">
           <div class="login-form-item input__inner">
-            <input v-model="loginForm.account" placeholder="Username" type="text" />
+            <input v-model="loginForm.username" placeholder="Username" type="text" />
           </div>
           <div class="login-form-item input__inner">
             <input v-model="loginForm.password" placeholder="Password" type="password" autocomplete="off" />
@@ -30,12 +30,12 @@
 
 <script>
 import { mapActions } from 'vuex'
-import md5 from 'md5'
+// import md5 from 'md5'
 export default {
   data () {
     return {
       loginForm: {
-        account: '',
+        username: '',
         password: ''
       },
       loading: false,
@@ -45,7 +45,7 @@ export default {
   watch: {},
   mounted () {
     this.initRememberMe()
-    this.init()
+    // this.init()
   },
   methods: {
     ...mapActions([
@@ -72,9 +72,9 @@ export default {
       let rememberMe = localStorage.getItem('remember_me')
       if (rememberMe && rememberMe === 'true') {
         this.rememberMe = true
-        let accountInfo = localStorage.getItem('account_info')
-        if (accountInfo) {
-          this.loginForm = JSON.parse(accountInfo)
+        let usernameInfo = localStorage.getItem('username_info')
+        if (usernameInfo) {
+          this.loginForm = JSON.parse(usernameInfo)
         } else {
           localStorage.setItem('remember_me', 'false')
         }
@@ -87,13 +87,13 @@ export default {
     handleLogin () {
       this.loading = true
       this.Login({
-        account: this.loginForm.account,
-        password: md5(this.loginForm.password)
+        username: this.loginForm.username,
+        password: this.loginForm.password
+        // password: md5(this.loginForm.password)
       })
         .then(data => {
           console.log('登录状态:', data)
-          this.loading = false
-          if (data.errcode === 0) {
+          if (data.code === null) {
             this.$message({
               type: 'success',
               message: '登录成功!'
@@ -116,12 +116,14 @@ export default {
           }
         })
         .catch(err => {
-          this.loading = false
           console.log('用户登录失败:', err)
           this.$message({
             type: 'error',
             message: '登录失败!'
           })
+        })
+        .finally(() => {
+          this.loading = false
         })
     }
   }
@@ -141,14 +143,15 @@ export default {
       .login-box {
         margin-top: 15px;
         padding: 10px 20px 20px;
-        background: rgba(255, 255, 255, 0.3);
+        // background: rgba(255, 255, 255, 0.3);
+        background: rgba(0,0,0,0.3);
         border-radius: 4px;
         header {
           text-align: center;
           .logo {
             display: inline-block;
             padding: 5px;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.2);
             border-radius: 50%;
             img {
               width: 50px;
@@ -178,7 +181,7 @@ export default {
             margin-top: 10px;
           }
           .input__inner {
-            border: 1px solid #a7a7a7;
+            // border: 1px solid #a7a7a7;
             border-radius: 4px;
             background: rgba(255, 255, 255, 0.2);
             input {

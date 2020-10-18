@@ -15,8 +15,8 @@
 <script>
 export default {
   components: {
-    MainHeader: () => import('@/components/Home/MainHeader'),
-    LeftNav: () => import('@/components/Book/LeftNav')
+    MainHeader: () => import('@/components/home/MainHeader'),
+    LeftNav: () => import('@/components/book/LeftNav')
     // LeftNav: () => import('@/components/LeftNav')
   },
   data () {

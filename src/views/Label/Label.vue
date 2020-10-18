@@ -58,7 +58,7 @@
 import { mapState, mapActions } from 'vuex'
 export default {
   components: {
-    MHeader: () => import('@/components/Public/MHeader')
+    MHeader: () => import('@/components/common/CHeader')
   },
   data () {
     return {

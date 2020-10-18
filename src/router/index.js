@@ -1,18 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/views/Home/Home'
-import AddBook from '@/views/Book/AddBook'
-import EditBook from '@/views/Book/EditBook'
-import AddClassify from '@/views/Classify/AddClassify'
-import EditClassify from '@/views/Classify/EditClassify'
-import UserInfo from '@/views/Book/UserInfo'
-import UserList from '@/views/Book/UserList'
-import Login from '@/views/Login/Login'
-import SyncLocal from '@/views/Sync/SyncLocal'
-import SyncOrigin from '@/views/Sync/SyncOrigin'
-// 标签管理
-import LabelManage from '@/views/Label/Label'
-// import { getCookie } from '../utils/cookies'
 
 // 解决 {_name:""NavigationDuplicated"... start
 const originalPush = Router.prototype.push
@@ -27,7 +14,7 @@ const router = new Router({
   routes: [
     {
       path: '/login',
-      component: Login
+      component: () => import('@/views/login/Login')
     },
     {
       path: '/',
@@ -35,7 +22,7 @@ const router = new Router({
     },
     {
       path: '/book',
-      component: Home,
+      component: () => import('@/views/home/Home'),
       redirect: '/book/manage',
       meta: {
         requireAuth: true
@@ -44,15 +31,15 @@ const router = new Router({
         {
           path: 'manage',
           name: 'Book',
-          component: () => import('@/views/Book/Book'),
+          component: () => import('@/views/book/Book'),
           meta: {
             requireAuth: true
           }
         },
         {
-          path: 'catalog',
-          name: 'Book',
-          component: () => import('@/views/Book/Book'),
+          path: 'catalog/:bookId',
+          name: 'Book2',
+          component: () => import('@/views/book/Book'),
           meta: {
             requireAuth: true
           }
@@ -60,7 +47,7 @@ const router = new Router({
         {
           path: 'add',
           name: 'AddBook',
-          component: AddBook,
+          component: () => import('@/views/book/AddBook'),
           meta: {
             requireAuth: true
           }
@@ -68,7 +55,7 @@ const router = new Router({
         {
           path: 'edit',
           name: 'EditBook',
-          component: EditBook,
+          component: () => import('@/views/book/EditBook'),
           meta: {
             requireAuth: true
           }
@@ -77,7 +64,7 @@ const router = new Router({
     },
     {
       path: '/classify',
-      component: Home,
+      component: () => import('@/views/home/Home'),
       redirect: '/classify/manage',
       meta: {
         requireAuth: true
@@ -86,7 +73,7 @@ const router = new Router({
         {
           path: 'manage',
           name: 'ClassifyManage',
-          component: () => import('@/views/Classify/Classify'),
+          component: () => import('@/views/classify/Classify'),
           meta: {
             requireAuth: true
           }
@@ -94,7 +81,7 @@ const router = new Router({
         {
           path: 'add',
           name: 'AddClassify',
-          component: AddClassify,
+          component: () => import('@/views/classify/AddClassify'),
           meta: {
             requireAuth: true
           }
@@ -102,7 +89,7 @@ const router = new Router({
         {
           path: 'edit/:_id',
           name: 'EditClassify',
-          component: EditClassify,
+          component: () => import('@/views/classify/EditClassify'),
           meta: {
             requireAuth: true
           }
@@ -111,7 +98,7 @@ const router = new Router({
     },
     {
       path: '/label',
-      component: Home,
+      component: () => import('@/views/home/Home'),
       redirect: '/classify/manage',
       meta: {
         requireAuth: true
@@ -120,7 +107,7 @@ const router = new Router({
         {
           path: 'manage',
           name: 'LabelManage',
-          component: LabelManage,
+          component: () => import('@/views/Label/Label'),
           meta: {
             requireAuth: true
           }
@@ -145,19 +132,19 @@ const router = new Router({
     },
     {
       path: '/user',
-      component: Home,
+      component: () => import('@/views/home/Home'),
       children: [
         {
           path: 'info',
           name: 'UserInfo',
-          component: UserInfo,
+          component: () => import('@/views/book/UserInfo'),
           meta: {
             requireAuth: true
           }
         }, {
           path: 'list',
           name: 'UserList',
-          component: UserList,
+          component: () => import('@/views/book/UserList'),
           meta: {
             requireAuth: true
           }
@@ -166,7 +153,7 @@ const router = new Router({
     },
     {
       path: '/sync',
-      component: Home,
+      component: () => import('@/views/home/Home'),
       meta: {
         requireAuth: true
       },
@@ -174,7 +161,7 @@ const router = new Router({
         {
           path: 'local',
           name: 'local',
-          component: SyncLocal,
+          component: () => import('@/views/sync/SyncLocal'),
           meta: {
             requireAuth: true
           }
@@ -182,7 +169,7 @@ const router = new Router({
         {
           path: 'origin',
           name: 'origin',
-          component: SyncOrigin,
+          component: () => import('@/views/sync/SyncOrigin'),
           meta: {
             requireAuth: true
           }

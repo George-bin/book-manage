@@ -7,9 +7,6 @@
       <el-form-item label="书籍作者">
         <el-input v-model="bookInfo.author" placeholder="请输入书籍作者!"></el-input>
       </el-form-item>
-      <el-form-item label="书籍ID">
-        <el-input v-model="bookInfo.bookId" placeholder="请输入书籍ID!"></el-input>
-      </el-form-item>
       <el-form-item label="分类">
         <el-select v-model="bookInfo.classify" placeholder="请选择" @change="handleChangeClassify">
           <el-option
@@ -52,7 +49,7 @@
             class="upload-demo"
             :action="`${config.env.BASE_API}/api/book/upload/img`"
             multiple
-            :with-credentials="true"
+            :with-credentials="false"
             :data="{ oldFilePath: bookInfo.bookCover }"
             :on-success="onUploadFileSuccess"
             :show-file-list="false"
@@ -109,7 +106,6 @@ export default {
       bookInfo: {
         bookName: '',
         author: '',
-        bookId: '',
         bookCover: '',
         sectionCount: '',
         bookIntro: '',

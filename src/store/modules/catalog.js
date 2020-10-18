@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2020-09-04 17:41:23
- * @LastEditTime: 2020-09-04 17:46:51
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \book-manage\src\store\modules\catalog.js
- */
 import {
   getCatalogRequest
 } from '@/api/catalog'

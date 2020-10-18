@@ -10,7 +10,7 @@ export function authRequest () {
 // 用户登录
 export function loginRequest (data) {
   return request({
-    url: '/manage/login',
+    url: '/login',
     method: 'post',
     data: data
   })

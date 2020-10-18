@@ -29,7 +29,7 @@
 import { mapMutations, mapActions, mapState } from 'vuex'
 export default {
   components: {
-    ScreenBook: () => import('@/components/Book/ScreenBook')
+    ScreenBook: () => import('@/components/book/ScreenBook')
   },
   data () {
     return {}
@@ -86,7 +86,9 @@ export default {
       this.GetBookList(classifyId)
     },
     // 目录
-    handleGoShowCatalog () {}
+    handleGoShowCatalog (item) {
+      this.$router.push(`/book/catalog/${item._id}`)
+    }
   }
 }
 </script>

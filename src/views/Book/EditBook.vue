@@ -1,11 +1,3 @@
-<!--
- * @Author: your name
- * @Date: 2020-04-28 14:50:02
- * @LastEditTime: 2020-09-04 17:19:23
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: \book-manage\src\views\Book\EditBook.vue
--->
 <template>
   <div class="edit-book-component">
     <m-header title="编辑小说" :back-btn="true"></m-header>
@@ -19,8 +11,8 @@ export default {
   name: '',
   props: {},
   components: {
-    MHeader: () => import('@/components/Public/MHeader'),
-    BookInfo: () => import('@/components/Book/BookInfo')
+    MHeader: () => import('@/components/common/CHeader'),
+    BookInfo: () => import('@/components/book/BookInfo')
   },
   data () {
     return {

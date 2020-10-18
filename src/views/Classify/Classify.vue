@@ -1,11 +1,11 @@
 <template>
   <div class="classify-list-component">
-    <m-header title="分类管理" :back-btn="false"></m-header>
+    <m-header title="分类管理" :back-btn="false">
+      <template v-slot:btnGroup>
+        <el-button type="primary" size="small" @click.native="handleClickGoAdd">新建</el-button>
+      </template>
+    </m-header>
     <br>
-    <!-- 新建分类 -->
-    <div class="add-classify-btn">
-      <el-button type="text" size="mini" icon="el-icon-plus" @click.native="handleClickGoAdd">新建</el-button>
-    </div>
     <!-- 分类列表 -->
     <div class="classify-list-content">
       <el-table
@@ -25,13 +25,13 @@
           width="50">
         </el-table-column>
         <el-table-column
-          prop="_id"
+          prop="id"
           label="id">
         </el-table-column>
         <el-table-column
           label="分类名称">
           <template slot-scope="{row}">
-            <el-tag>{{row.classifyName}}</el-tag>
+            <el-tag>{{row.name}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column
@@ -61,7 +61,7 @@
 import { mapState, mapActions } from 'vuex'
 export default {
   components: {
-    MHeader: () => import('@/components/Public/MHeader')
+    MHeader: () => import('@/components/common/CHeader')
   },
   data () {
     return {
@@ -84,29 +84,32 @@ export default {
     // 编辑分类
     handleEditClassify (classify) {
       // console.log('classify:', classify)
-      this.$router.push(`/classify/edit/${classify._id}`)
+      this.$router.push(`/classify/edit/${classify.id}`)
     },
-    // 删除分类
+    /**
+     * 删除分类
+     * @param classify：分类信息
+     */
     handleDelClassify (classify) {
       this.$confirm('确定删除该分类吗?', '提示', {
         type: 'warning'
       })
         .then(() => {
-          this.handleInitLoading()
-          this.DelClassifyById(classify._id)
+          // this.handleInitLoading()
+          this.DelClassifyById(classify.id)
             .then(data => {
-              let { errcode, message } = data
-              if (errcode === 0) {
+              let { code, msg } = data
+              if (code === null) {
                 this.$message({
                   type: 'success',
                   message: '删除分类成功!'
                 })
                 this.GetClassifyList()
-                this.loading.close()
+                // this.loading.close()
               } else {
                 this.$message({
                   type: 'warning',
-                  message
+                  message: msg
                 })
               }
             })
@@ -141,11 +144,6 @@ export default {
   padding: 20px 40px;
   background: #fff;
   border-radius: 4px;
-  .add-classify-btn {
-    position: absolute;
-    top: 15px;
-    right: 40px;
-  }
   .classify-list-title {
     height: 70px;
     line-height: 70px;

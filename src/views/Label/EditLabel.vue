@@ -11,8 +11,8 @@ export default {
   name: '',
   props: {},
   components: {
-    MHeader: () => import('@/components/Public/MHeader'),
-    LabelInfo: () => import('@/components/Label/LabelInfo')
+    MHeader: () => import('@/components/common/CHeader'),
+    LabelInfo: () => import('@/components/label/LabelInfo')
   },
   data () {
     return {}

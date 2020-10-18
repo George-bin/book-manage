@@ -10,7 +10,7 @@ const service = axios.create({
   // 请求超时时间
   timeout: 60000,
   // 允许携带cookie
-  withCredentials: true
+  withCredentials: false
 })
 
 // request拦截器
