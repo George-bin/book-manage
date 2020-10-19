@@ -8,32 +8,17 @@ import {
   deleteUserRequest,
   updateUserInfoRequest,
   getBookInfoByIdRequest,
-  getScreenBookListRequest
+  getBookListByScreenRequest
 } from '../../api/book'
 
 const home = {
   state: {
     // 用户列表
-    userList: [],
-    // 当前分类的小说列表
-    bookList: [],
-    // 书籍筛选
-    bookScreen: {
-      page: 1,
-      count: 5,
-      classifyId: 'all',
-      labelId: 'all'
-    }
+    userList: []
   },
   mutations: {
     SET_USER_LIST (state, data) {
       state.userList = data
-    },
-    SET_BOOK_LIST (state, data) {
-      state.bookList = data
-    },
-    SET_BOOK_SCREEN (state, data) {
-      state.bookScreen = data
     }
   },
   actions: {
@@ -42,7 +27,6 @@ const home = {
       return new Promise((resolve, reject) => {
         getBookListRequest(data)
           .then(response => {
-            commit('SET_BOOK_LIST', response.data.bookList)
             resolve(response.data)
           })
           .catch(err => {
@@ -99,14 +83,10 @@ const home = {
       })
     },
     // 条件筛选（分页处理）
-    GetScreenBookList ({ commit }, data) {
+    GetBookListByScreen ({ commit }, data) {
       return new Promise((resolve, reject) => {
-        getScreenBookListRequest(data)
+        getBookListByScreenRequest(data)
           .then(response => {
-            let { errcode, bookList } = response.data
-            if (errcode === 0) {
-              commit('SET_BOOK_LIST', bookList)
-            }
             resolve(response.data)
           })
           .catch(err => {

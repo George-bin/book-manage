@@ -1,7 +1,7 @@
 <template>
   <div class="book-list-main-component">
     <!-- 筛选组件 -->
-    <screen-book></screen-book>
+    <screen-book :bookScreen="screen" @syncScreen="onSyncScreen"></screen-book>
 
     <!--当前分类小说列表-->
     <ul class="book-list-section">
@@ -11,9 +11,9 @@
         class="book-list-item">
         <img :src="book.bookCover" class="book-cover" alt="封面" />
         <div class="book-info">
-          <h3 class="book-name">{{book.bookName}}</h3>
+          <h3 class="book-name">{{book.name}}</h3>
           <p class="book-author">作者: {{book.author}}</p>
-          <p class="book-intro">简介: {{book.bookIntro}}</p>
+          <p class="book-intro">简介: {{book.des}}</p>
           <div class="book-btn-group">
             <el-button @click="handleGoShowCatalog(book)" type="text" size="small">目录</el-button>
             <el-button @click="handleGoEdit(book)" type="text" size="small">编辑</el-button>
@@ -32,25 +32,60 @@ export default {
     ScreenBook: () => import('@/components/book/ScreenBook')
   },
   data () {
-    return {}
+    return {
+      screen: {
+        classifyId: 'all',
+        labelId: 'all'
+      },
+      bookList: []
+    }
   },
   computed: {
     ...mapState({
       classifyList: state => state.classify.classifyList,
-      bookList: state => state.book.bookList,
       activeClassifyId: state => state.book.activeClassifyId
     })
   },
   mounted () {
-    // this.init()
+    this.init()
   },
   methods: {
     ...mapMutations([]),
     ...mapActions([
       'DeleteBook',
-      'GetClassifyList'
+      'GetClassifyList',
+      'GetBookListByScreen'
     ]),
-    init () {},
+    init () {
+      this.handleGetBookListByScreen()
+    },
+    // 筛选条件同步
+    onSyncScreen (data) {
+      this.screen = data
+      this.GetBookListByScreen()
+    },
+    // 根据筛选条件获取小说列表
+    handleGetBookListByScreen () {
+      this.GetBookListByScreen(this.screen)
+        .then(res => {
+          let { code, msg, data } = res
+          if (code === null) {
+            this.bookList = JSON.parse(JSON.stringify(data))
+          } else {
+            this.$message({
+              type: 'warning',
+              message: msg
+            })
+          }
+        })
+        .catch(err => {
+          console.error('获取小说列表失败：', err)
+          this.$message({
+            type: 'error',
+            message: '获取小说列表失败！'
+          })
+        })
+    },
     // 前往编辑
     handleGoEdit (item) {
       this.$router.push('/book/edit')
@@ -81,9 +116,6 @@ export default {
         .catch(() => {
           console.log('取消删除小说')
         })
-    },
-    handleChangeClassify (classifyId) {
-      this.GetBookList(classifyId)
     },
     // 目录
     handleGoShowCatalog (item) {

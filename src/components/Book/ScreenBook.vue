@@ -15,12 +15,12 @@
             class="value-item">
             <span
               :style="{
-                border: bookScreen.classifyId === item._id ? '1px solid #9e9e9e' : '',
-                color: bookScreen.classifyId === item._id ? '#fff' : '#9e9e9e',
-                background: bookScreen.classifyId === item._id ? '#9e9e9e' : 'none'
+                border: screen.classifyId === item.id ? '1px solid #9e9e9e' : '',
+                color: screen.classifyId === item.id ? '#fff' : '#9e9e9e',
+                background: screen.classifyId === item.id ? '#9e9e9e' : 'none'
               }"
               @click="handleSelectScreenClassify(item)">
-              {{item.classifyName}}
+              {{item.name}}
             </span>
           </li>
         </ul>
@@ -45,9 +45,9 @@
             class="value-item">
             <span
               :style="{
-                border: bookScreen.labelId === item.id ? '1px solid #9e9e9e' : '',
-                color: bookScreen.labelId === item.id ? '#fff' : '#9e9e9e',
-                background: bookScreen.labelId === item.id ? '#9e9e9e' : 'none'
+                border: screen.labelId === item.id ? '1px solid #9e9e9e' : '',
+                color: screen.labelId === item.id ? '#fff' : '#9e9e9e',
+                background: screen.labelId === item.id ? '#9e9e9e' : 'none'
               }"
               @click="handleSelectScreenLabel(item)">
               {{item.name}}
@@ -60,76 +60,74 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 // 分类 标签
 export default {
   name: '',
-  props: {},
+  props: {
+    bookScreen: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  },
   components: {},
   data () {
     return {
       // 展开控件
-      classifyUnfold: false
+      classifyUnfold: false,
+      screen: JSON.parse(JSON.stringify(this.bookScreen))
     }
   },
   computed: {
     ...mapState({
-      bookScreen: state => state.book.bookScreen,
       classifyList: state => state.classify.classifyList,
       labelList: state => state.label.labelList
     }),
     classifyListComputed () {
       let arr = JSON.parse(JSON.stringify(this.classifyList))
       arr.unshift({
-        _id: 'all',
-        classifyName: '全部'
+        id: 'all',
+        name: '全部'
       })
       return arr
     },
     labelListComputed () {
       let arr = JSON.parse(JSON.stringify(this.labelList))
       arr.unshift({
-        _id: 'all',
+        id: 'all',
         id: 'all',
         name: '全部'
       })
       return arr
     }
   },
-  watch: {
-    bookScreen: function (val, oldval) {
-      this.GetScreenBookList(val)
-    }
-  },
+  watch: {},
   created () {},
   mounted () {
     this.init()
   },
   methods: {
-    ...mapMutations([
-      'SET_BOOK_SCREEN'
-    ]),
     ...mapActions([
       'GetLabelList',
       'GetClassifyList',
-      'GetScreenBookList'
+      'GetBookListByScreen'
     ]),
     init () {
       this.GetLabelList()
       this.GetClassifyList()
-      this.GetScreenBookList(this.bookScreen)
+      // this.GetBookListByScreen(this.bookScreen)
     },
     // 筛选条件：classify
     handleSelectScreenClassify (item) {
-      let screen = JSON.parse(JSON.stringify(this.bookScreen))
-      screen.classifyId = item._id
-      this.SET_BOOK_SCREEN(screen)
+      this.screen.classifyId = item.id
+      this.$emit('syncScreen', JSON.parse(JSON.stringify(this.screen)))
     },
     // 筛选条件：label
     handleSelectScreenLabel (item) {
-      let screen = JSON.parse(JSON.stringify(this.bookScreen))
-      screen.labelId = item.id
-      this.SET_BOOK_SCREEN(screen)
+      this.screen.labelId = item.id
+      this.$emit('syncScreen', JSON.parse(JSON.stringify(this.screen)))
     }
   }
 }

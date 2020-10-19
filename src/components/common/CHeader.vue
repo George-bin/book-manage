@@ -1,7 +1,9 @@
 <template>
   <header class="back-component">
     <div class="back-box">
-      <h2>{{title}}</h2>
+      <h2>
+        <span>{{title}}</span>
+      </h2>
       <div class="btn-group">
         <slot name="btnGroup"></slot>
         <el-button v-if="backBtn" @click="handleClickGoBack" type="warning" size="small">返回</el-button>
@@ -46,7 +48,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     padding-bottom: 5px;
-    border-bottom: 1px solid #dfdfdf;
+    /*border-bottom: 1px solid #dfdfdf;*/
     font-size: 14px;
     color: #333;
     .back-btn {
@@ -54,8 +56,14 @@ export default {
       cursor: pointer;
     }
     h2 {
-      padding-bottom: 5px;
-      // font-weight: normal;
+      height: 36px;
+      line-height: 36px;
+      span {
+        display: inline-block;
+        height: 100%;
+        padding: 0 10px;
+        border-bottom: 4px solid #ccc;
+      }
     }
   }
 }

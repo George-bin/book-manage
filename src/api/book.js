@@ -41,7 +41,7 @@ export function deleteBookRequest (bookId) {
 }
 
 // 条件筛选（分页处理）
-export function getScreenBookListRequest (data) {
+export function getBookListByScreenRequest (data) {
   return request({
     url: '/screen',
     method: 'get',
