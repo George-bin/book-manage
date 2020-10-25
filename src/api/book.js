@@ -1,12 +1,5 @@
 import request from '../utils/request'
 
-// 根据id获取书籍信息
-export function getBookInfoByIdRequest (id) {
-  return request({
-    url: `/info/${id}`
-  })
-}
-
 // 根据分类id获取小说列表
 export function getBookListRequest (classifyId) {
   return request({
@@ -14,10 +7,10 @@ export function getBookListRequest (classifyId) {
   })
 }
 
-// 注册书籍
-export function registerBookRequest (data) {
+// 新增小说
+export function addBookRequest (data) {
   return request({
-    url: '/registerBook',
+    url: '/add',
     method: 'post',
     data: data
   })
@@ -26,17 +19,24 @@ export function registerBookRequest (data) {
 // 更新书籍
 export function updateBookRequest (data) {
   return request({
-    url: '/',
+    url: '/update',
     method: 'put',
     data: data
   })
 }
 
 // 删除书籍
-export function deleteBookRequest (bookId) {
+export function deleteBookByIdRequest (id) {
   return request({
-    url: `/delete/${bookId}`,
+    url: `/delete/${id}`,
     method: 'delete'
+  })
+}
+
+// 根据id获取书籍信息
+export function getBookInfoByIdRequest (id) {
+  return request({
+    url: `/select/${id}`
   })
 }
 

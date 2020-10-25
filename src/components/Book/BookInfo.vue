@@ -1,83 +1,52 @@
 <template>
   <div class="book-info-main-component">
-    <el-form>
-      <el-form-item label="书籍名称">
-        <el-input v-model="bookInfo.bookName" placeholder="请输入书籍名称!"></el-input>
+    <el-form :rules="rules" :model="formData" ref="form">
+      <el-form-item label="书籍名称" prop="name">
+        <el-input v-model="formData.name" placeholder="请输入书籍名称!"></el-input>
       </el-form-item>
-      <el-form-item label="书籍作者">
-        <el-input v-model="bookInfo.author" placeholder="请输入书籍作者!"></el-input>
+      <el-form-item label="书籍作者" prop="author">
+        <el-input v-model="formData.author" placeholder="请输入书籍作者!"></el-input>
       </el-form-item>
-      <el-form-item label="分类">
-        <el-select v-model="bookInfo.classify" placeholder="请选择" @change="handleChangeClassify">
+      <el-form-item label="分类" required>
+        <el-select v-model="formData.cid" placeholder="请选择" @change="handleChangeClassify">
           <el-option
             v-for="item in classifyList"
-            :key="item._id"
-            :label="item.classifyName"
-            :value="item._id">
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="章节数">
-        <el-input v-model="bookInfo.sectionCount" placeholder="请输入小说章节数!"></el-input>
+        <el-input v-model="formData.chapterCount" placeholder="请输入小说章节数!"></el-input>
       </el-form-item>
-      <el-form-item label="人气指数">
-        <el-input v-model="bookInfo.popularityIndex" placeholder="请输入小说人气指数!"></el-input>
+      <el-form-item label="热度">
+        <el-input v-model="formData.hot" placeholder="请输入小说人气指数!"></el-input>
       </el-form-item>
       <el-form-item label="评分">
-        <el-input v-model="bookInfo.grade" placeholder="请输入小说人气指数!"></el-input>
+        <el-input v-model="formData.score" placeholder="请输入小说人气指数!"></el-input>
       </el-form-item>
-      <el-form-item label="点赞">
-        <el-input v-model="bookInfo.like" placeholder="请输入小说点赞数!"></el-input>
-      </el-form-item>
-      <el-form-item label="标签">
-        <el-checkbox-group v-model="bookInfo.label">
-          <el-checkbox
-            v-for="item in labelList"
-            :key="item._id"
-            :label="item.id">
-            {{item.name}}
-          </el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="书籍简介">
-        <el-input type="textarea" v-model="bookInfo.bookIntro" placeholder="请输入小说简介!"></el-input>
+      <el-form-item label="书籍简介" prop="des">
+        <el-input type="textarea" v-model="formData.des" placeholder="请输入小说简介!"></el-input>
       </el-form-item>
       <el-form-item label="上传封面">
-        <div v-if="bookInfo.bookCover" class="cover-address-config">
-          <el-input v-model="bookInfo.bookCover" disabled></el-input>
-          <el-upload
-            class="upload-demo"
-            :action="`${config.env.BASE_API}/api/book/upload/img`"
-            multiple
-            :with-credentials="false"
-            :data="{ oldFilePath: bookInfo.bookCover }"
-            :on-success="onUploadFileSuccess"
-            :show-file-list="false"
-            :limit="1"
-            :file-list="fileList">
-            <el-button size="small" type="primary" class="restart-upload-btn" @click="handleRestartUpload">重新上传</el-button>
-          </el-upload>
-        </div>
         <el-upload
-          v-else
-          class="upload-demo"
-          :action="`${config.env.BASE_API}/api/book/upload/img`"
+          class="upload-img"
+          :action="`${config.env.BASE_API}/api/book/upload`"
           multiple
-          :on-success="onUploadFileSuccess"
+          :with-credentials="false"
+          :data="{ oldFilePath: formData.cover }"
+          :on-success="onUploadSuccess"
           :show-file-list="false"
           :limit="1"
           :file-list="fileList">
-          <el-button size="small" type="primary" class="upload-btn">点击上传</el-button>
+          <img v-if="formData.cover" :src="formData.cover" />
+          <el-button v-else size="small" type="primary" @click="handleRestartUpload">上传图片</el-button>
         </el-upload>
+        <el-input v-if="formData.cover" v-model="formData.cover" disabled></el-input>
       </el-form-item>
       <el-form-item style="margin-left: 80px">
-        <el-button
-          v-if="useType === 'add' || !useType"
-          :loading="loading"
-          @click="handleRegisterBook"
-          class="submit-btn"
-          type="primary">提交</el-button>
-        <el-button v-else :loading="loading" @click="handleUpdateBook" class="submit-btn" type="primary">更新</el-button>
+        <slot name="btnGroup"></slot>
       </el-form-item>
     </el-form>
   </div>
@@ -103,22 +72,31 @@ export default {
   },
   data () {
     return {
-      bookInfo: {
-        bookName: '',
+      formData: {
+        bid: '',
+        name: '',
         author: '',
-        bookCover: '',
-        sectionCount: '',
-        bookIntro: '',
-        // 人气指数
-        popularityIndex: 0,
+        cover: '',
+        des: '',
+        chapterCount: 0,
+        // 热度
+        hot: 0,
         // 评分
-        grade: 0,
-        // 点赞
-        like: 0,
+        score: 0,
         // 标签
-        label: [],
+        label: '',
         // 分类
-        classify: ''
+        cid: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入小说名称！', trigger: 'blur' },
+          { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' }
+        ],
+        author: [
+          { required: true, message: '请输入作者名称！', trigger: 'blur' },
+          { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' }
+        ]
       },
       fileList: [],
       config: config,
@@ -132,12 +110,8 @@ export default {
     })
   },
   watch: {
-    'bookInfo.label': function (val, oldval) {
-      console.log('label', val)
-    }
   },
   created () {
-    // console.log(this.$route)
   },
   mounted () {
     this.init()
@@ -145,7 +119,6 @@ export default {
   methods: {
     ...mapActions([
       'RegisterBook',
-      'UpdateBook',
       'GetClassifyList',
       'GetBookInfoById',
       'GetLabelList'
@@ -153,16 +126,17 @@ export default {
     init () {
       // 编辑小说
       if (this.useType === 'edit') {
-        let bookId = sessionStorage.getItem('book_id')
-        this.GetBookInfoById(bookId)
-          .then(data => {
-            let { errcode, message, bookInfo } = data
-            if (errcode === 0) {
-              this.bookInfo = JSON.parse(JSON.stringify(bookInfo))
+        // let bookId = sessionStorage.getItem('book_id')
+        let {id} = this.$route.params
+        this.GetBookInfoById(id)
+          .then(res => {
+            let { code, msg, data } = res
+            if (code === null) {
+              this.formData = JSON.parse(JSON.stringify(data))
             } else {
               this.$message({
                 type: 'warning',
-                message
+                message: msg
               })
               this.$router.back()
             }
@@ -173,76 +147,16 @@ export default {
           })
       }
       this.GetClassifyList()
-      this.GetLabelList()
-    },
-    // 新增小说
-    handleRegisterBook () {
-      console.log(this.bookInfo)
-      this.loading = true
-      this.RegisterBook(this.bookInfo)
-        .then(data => {
-          this.loading = false
-          let { errcode, message } = data
-          if (errcode === 0) {
-            this.$message({
-              type: 'success',
-              message: '新增小说成功!'
-            })
-            this.handleInitBookInfo()
-          } else {
-            this.$message({
-              type: 'warning',
-              message: message
-            })
-          }
-        })
-        .catch(err => {
-          this.loading = false
-          console.log('新增小说失败', err)
-          this.$message({
-            type: 'error',
-            message: '新增小说失败!'
-          })
-        })
-    },
-    // 更新小说
-    handleUpdateBook () {
-      // console.log('bookInfo', this.bookInfo)
-      this.loading = true
-      this.UpdateBook(this.bookInfo)
-        .then(data => {
-          this.loading = false
-          let { errcode, message } = data
-          if (errcode === 0) {
-            this.$message({
-              type: 'success',
-              message: '更新成功!'
-            })
-            this.$router.back()
-          } else {
-            this.$message({
-              type: 'warning',
-              message
-            })
-          }
-        })
-        .catch(err => {
-          console.error('小说信息更新失败', err)
-          this.loading = false
-          this.$message({
-            type: 'error',
-            message: '更新失败!'
-          })
-        })
+      // this.GetLabelList()
     },
     // 上传图片成功
-    onUploadFileSuccess (response, file, fileList) {
+    onUploadSuccess (response, file, fileList) {
       console.log('response', response)
       this.$message({
         type: 'success',
         message: '图片上传成功!'
       })
-      this.bookInfo.bookCover = response.filePath
+      this.formData.cover = response.data
     },
     // 重新上传图片
     handleRestartUpload () {
@@ -250,24 +164,21 @@ export default {
     },
     // 选择分类
     handleChangeClassify () {},
-    handleInitBookInfo () {
-      this.bookInfo = {
-        bookName: '',
+    handleInitformData () {
+      this.formData = {
+        bid: '',
+        name: '',
         author: '',
-        bookId: '',
-        bookCover: '',
-        sectionCount: '',
-        bookIntro: '',
-        // 人气指数
-        popularityIndex: 0,
+        cover: '',
+        des: '',
+        // 热度
+        hot: 0,
         // 评分
-        grade: 0,
-        // 点赞
-        like: 0,
+        score: 0,
         // 标签
-        label: [],
+        label: '',
         // 分类
-        classify: ''
+        cid: ''
       }
     }
   }
@@ -276,6 +187,8 @@ export default {
 
 <style lang="scss">
   .book-info-main-component {
+    max-width: 600px;
+    margin-top: 20px;
     .book-info-title {
       height: 70px;
       line-height: 70px;
@@ -290,10 +203,10 @@ export default {
         }
         .el-form-item__content {
           flex: 1;
-          .cover-address-config {
-            display: flex;
-            .restart-upload-btn {
-              margin-left: 10px;
+          .upload-img {
+            img {
+              width: 120px;
+              height: 150px;
             }
           }
           .submit-btn {

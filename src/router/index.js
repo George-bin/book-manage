@@ -37,14 +37,6 @@ const router = new Router({
           }
         },
         {
-          path: 'catalog/:bookId',
-          name: 'Book2',
-          component: () => import('@/views/book/Book'),
-          meta: {
-            requireAuth: true
-          }
-        },
-        {
           path: 'add',
           name: 'AddBook',
           component: () => import('@/views/book/AddBook'),
@@ -53,9 +45,35 @@ const router = new Router({
           }
         },
         {
-          path: 'edit',
+          path: 'edit/:id',
           name: 'EditBook',
           component: () => import('@/views/book/EditBook'),
+          meta: {
+            requireAuth: true
+          }
+        }
+      ]
+    },
+    {
+      path: '/catalog',
+      component: () => import('@/views/home/Home'),
+      redirect: '/catalog/:b_id',
+      meta: {
+        requireAuth: true
+      },
+      children: [
+        {
+          path: ':b_id',
+          name: 'Catalog',
+          component: () => import('@/views/catalog/Catalog'),
+          meta: {
+            requireAuth: true
+          }
+        },
+        {
+          path: 'content/:z_id',
+          name: 'CatalogContent',
+          component: () => import('@/views/catalog/CatalogContent'),
           meta: {
             requireAuth: true
           }
@@ -107,7 +125,7 @@ const router = new Router({
         {
           path: 'manage',
           name: 'LabelManage',
-          component: () => import('@/views/Label/Label'),
+          component: () => import('@/views/label/Label'),
           meta: {
             requireAuth: true
           }
@@ -115,7 +133,7 @@ const router = new Router({
         {
           path: 'add',
           name: 'AddLabel',
-          component: () => import('@/views/Label/AddLabel'),
+          component: () => import('@/views/label/AddLabel'),
           meta: {
             requireAuth: true
           }

@@ -10,8 +10,8 @@ const catalog = {
     GetCatalog ({ commit }, data) {
       return new Promise((resolve, reject) => {
         getCatalogRequest(data)
-          .then((res) => {
-            resolve(res)
+          .then((response) => {
+            resolve(response.data)
           })
           .catch(err => {
             reject(err)

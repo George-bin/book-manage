@@ -11,13 +11,13 @@
           }">
           <li
             v-for="item in classifyListComputed"
-            :key="item._id"
+            :key="item.id"
             class="value-item">
             <span
               :style="{
-                border: screen.classifyId === item.id ? '1px solid #9e9e9e' : '',
-                color: screen.classifyId === item.id ? '#fff' : '#9e9e9e',
-                background: screen.classifyId === item.id ? '#9e9e9e' : 'none'
+                border: screen.c_id === item.id ? '1px solid #9e9e9e' : '',
+                color: screen.c_id === item.id ? '#fff' : '#9e9e9e',
+                background: screen.c_id === item.id ? '#9e9e9e' : 'none'
               }"
               @click="handleSelectScreenClassify(item)">
               {{item.name}}
@@ -36,7 +36,7 @@
         </div>
       </div>
       <!-- 标签筛选 -->
-      <div class="screen-class-item">
+      <div v-if="false" class="screen-class-item">
         <span class="label">标签</span>
         <ul class="value-list">
           <li
@@ -97,7 +97,6 @@ export default {
       let arr = JSON.parse(JSON.stringify(this.labelList))
       arr.unshift({
         id: 'all',
-        id: 'all',
         name: '全部'
       })
       return arr
@@ -111,17 +110,15 @@ export default {
   methods: {
     ...mapActions([
       'GetLabelList',
-      'GetClassifyList',
-      'GetBookListByScreen'
+      'GetClassifyList'
     ]),
     init () {
-      this.GetLabelList()
+      // this.GetLabelList()
       this.GetClassifyList()
-      // this.GetBookListByScreen(this.bookScreen)
     },
     // 筛选条件：classify
     handleSelectScreenClassify (item) {
-      this.screen.classifyId = item.id
+      this.screen.c_id = item.id
       this.$emit('syncScreen', JSON.parse(JSON.stringify(this.screen)))
     },
     // 筛选条件：label

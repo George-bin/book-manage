@@ -1,11 +1,11 @@
 <template>
   <div class="label-component">
-    <m-header title="标签管理" :back-btn="false"></m-header>
+    <m-header title="标签管理" :back-btn="false">
+      <template v-slot:btnGroup>
+        <el-button type="primary" size="mini" @click.native="handleClickGoAdd">新建</el-button>
+      </template>
+    </m-header>
     <br>
-    <!-- 新建分类 -->
-    <div class="add-label-btn">
-      <el-button type="text" size="mini" icon="el-icon-plus" @click.native="handleClickGoAdd">新建</el-button>
-    </div>
     <!-- 分类列表 -->
     <div class="label-list-content">
       <el-table
@@ -71,7 +71,7 @@ export default {
     })
   },
   mounted () {
-    this.GetLabelList()
+    // this.GetLabelList()
   },
   methods: {
     ...mapActions([
@@ -131,11 +131,6 @@ export default {
   padding: 20px 40px;
   background: #fff;
   border-radius: 4px;
-  .add-label-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-  }
   .label-list-title {
     height: 70px;
     line-height: 70px;

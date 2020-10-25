@@ -7,15 +7,18 @@
     <ul class="book-list-section">
       <li
         v-for="book in bookList"
-        :key="book._id"
+        :key="book.bid"
         class="book-list-item">
-        <img :src="book.bookCover" class="book-cover" alt="封面" />
+        <div class="book-cover">
+          <img :src="book.cover" class="" alt="封面" />
+        </div>
         <div class="book-info">
-          <h3 class="book-name">{{book.name}}</h3>
+          <h3 class="book-name">
+            <span @click="handleGoShowCatalog(book)">{{book.name}}</span>
+          </h3>
           <p class="book-author">作者: {{book.author}}</p>
           <p class="book-intro">简介: {{book.des}}</p>
           <div class="book-btn-group">
-            <el-button @click="handleGoShowCatalog(book)" type="text" size="small">目录</el-button>
             <el-button @click="handleGoEdit(book)" type="text" size="small">编辑</el-button>
             <el-button @click="handleDeleteBook(book)" type="text" size="small">删除</el-button>
           </div>
@@ -34,8 +37,8 @@ export default {
   data () {
     return {
       screen: {
-        classifyId: 'all',
-        labelId: 'all'
+        c_id: 'all'
+        // labelId: 'all'
       },
       bookList: []
     }
@@ -52,7 +55,7 @@ export default {
   methods: {
     ...mapMutations([]),
     ...mapActions([
-      'DeleteBook',
+      'DeleteBookById',
       'GetClassifyList',
       'GetBookListByScreen'
     ]),
@@ -62,11 +65,13 @@ export default {
     // 筛选条件同步
     onSyncScreen (data) {
       this.screen = data
-      this.GetBookListByScreen()
+      this.handleGetBookListByScreen()
     },
     // 根据筛选条件获取小说列表
     handleGetBookListByScreen () {
-      this.GetBookListByScreen(this.screen)
+      let param = JSON.parse(JSON.stringify(this.screen))
+      if (param.c_id === 'all') delete param.c_id
+      this.GetBookListByScreen(param)
         .then(res => {
           let { code, msg, data } = res
           if (code === null) {
@@ -88,7 +93,7 @@ export default {
     },
     // 前往编辑
     handleGoEdit (item) {
-      this.$router.push('/book/edit')
+      this.$router.push(`/book/edit/${item.bid}`)
       sessionStorage.setItem('book_id', item._id)
     },
     // 删除书籍
@@ -97,13 +102,13 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          this.DeleteBook(book.bookId)
+          this.DeleteBookById(book.bid)
             .then(data => {
               this.$message({
                 type: 'success',
                 message: '删除小说成功!'
               })
-              this.GetClassifyList()
+              this.handleGetBookListByScreen()
             })
             .catch(err => {
               this.$message({
@@ -119,7 +124,7 @@ export default {
     },
     // 目录
     handleGoShowCatalog (item) {
-      this.$router.push(`/book/catalog/${item._id}`)
+      this.$router.push(`/catalog/${item.bid}`)
     }
   }
 }
@@ -136,15 +141,27 @@ export default {
       .book-list-item {
         display: flex;
         .book-cover {
-          width: 110px;
-          height: 150px;
+          width: 100px;
+          height: 140px;
+          border: 5px solid #f1f1f1;
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
         .book-info {
           flex: 1;
           margin-left: 20px;
           .book-name {
             margin-top: 5px;
-            font-size: 18px;
+            span {
+              /*font-size: 18px;*/
+              &:hover {
+                border-bottom: 1px solid orangered;
+                color: orangered;
+                cursor: pointer;
+              }
+            }
           }
           .book-author, .book-intro, .book-btn-group {
             margin-top: 10px;

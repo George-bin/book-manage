@@ -2,7 +2,7 @@
   <div class="classify-list-component">
     <m-header title="分类管理" :back-btn="false">
       <template v-slot:btnGroup>
-        <el-button type="primary" size="small" @click.native="handleClickGoAdd">新建</el-button>
+        <el-button type="primary" size="mini" @click.native="handleClickGoAdd">新建</el-button>
       </template>
     </m-header>
     <br>

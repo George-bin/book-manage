@@ -6,7 +6,7 @@
       </h2>
       <div class="btn-group">
         <slot name="btnGroup"></slot>
-        <el-button v-if="backBtn" @click="handleClickGoBack" type="warning" size="small">返回</el-button>
+        <el-button v-if="backBtn" @click="handleClickGoBack" type="warning" size="mini">返回</el-button>
       </div>
     </div>
   </header>

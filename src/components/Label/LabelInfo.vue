@@ -4,19 +4,23 @@
       <el-form-item label="标签名称">
         <el-input v-model="labelForm.name" placeholder="请输入标签名称!"></el-input>
       </el-form-item>
+      <el-form-item label="备注">
+        <el-input v-model="labelForm.remark" placeholder="备注!"></el-input>
+      </el-form-item>
       <el-form-item>
-        <el-button
-          v-if="useType === 'add' || !useType"
-          @click="handleAddLabel"
-          class="submit-btn"
-          type="primary"
-          :loading="loading">提交</el-button>
-        <el-button
-          v-else
-          @click="handleUpdateLabel"
-          class="submit-btn"
-          type="primary"
-          :loading="loading">更新</el-button>
+        <slot name="btnGroup"></slot>
+<!--        <el-button-->
+<!--          v-if="useType === 'add' || !useType"-->
+<!--          @click="handleAddLabel"-->
+<!--          class="submit-btn"-->
+<!--          type="primary"-->
+<!--          :loading="loading">提交</el-button>-->
+<!--        <el-button-->
+<!--          v-else-->
+<!--          @click="handleUpdateLabel"-->
+<!--          class="submit-btn"-->
+<!--          type="primary"-->
+<!--          :loading="loading">更新</el-button>-->
       </el-form-item>
     </el-form>
   </div>
@@ -34,7 +38,8 @@ export default {
   data () {
     return {
       labelForm: {
-        name: ''
+        name: '',
+        remark: ''
       },
       loading: false
     }
@@ -71,46 +76,6 @@ export default {
           })
       }
     },
-    // 新增标签
-    handleAddLabel () {
-      this.loading = true
-      this.AddLabel({
-        name: this.labelForm.name
-      })
-        .then(data => {
-          this.loading = false
-          let { errcode, message } = data
-          if (errcode === 0) {
-            this.$message({
-              type: 'success',
-              message: '成功!'
-            })
-            this.handleInitLabelForm()
-            this.GetLabelList()
-            this.$confirm('新增标签成功，是否继续添加标签?', '提示', {
-              type: 'success',
-              cancelButtonText: '不添加',
-              confirmButtonText: '添加'
-            })
-              .then(() => {})
-              .catch(() => {
-                this.$router.back()
-              })
-          } else {
-            this.$message({
-              type: 'warning',
-              message
-            })
-          }
-        })
-        .catch(err => {
-          console.log('新建标签失败', err)
-          this.$message({
-            type: 'error',
-            message: '新建标签失败!'
-          })
-        })
-    },
     // 更新分类
     handleUpdateLabel () {
       this.$confirm('确定更新吗?', '提示', {
@@ -142,5 +107,6 @@ export default {
 
 <style lang="scss">
 .label-info-component {
+  max-width: 600px;
 }
 </style>

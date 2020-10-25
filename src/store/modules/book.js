@@ -1,8 +1,8 @@
 import {
-  registerBookRequest,
+  addBookRequest,
   getBookListRequest,
   updateBookRequest,
-  deleteBookRequest,
+  deleteBookByIdRequest,
   registerUserRequest,
   getUserListRequest,
   deleteUserRequest,
@@ -47,9 +47,9 @@ const home = {
       })
     },
     // 新增书籍
-    RegisterBook ({ commit }, data) {
+    AddBook ({ commit }, data) {
       return new Promise((resolve, reject) => {
-        registerBookRequest(data)
+        addBookRequest(data)
           .then(response => {
             resolve(response.data)
           })
@@ -71,9 +71,9 @@ const home = {
       })
     },
     // 删除小说
-    DeleteBook ({ commit }, data) {
+    DeleteBookById ({ commit }, data) {
       return new Promise((resolve, reject) => {
-        deleteBookRequest(data)
+        deleteBookByIdRequest(data)
           .then(response => {
             resolve(response)
           })
