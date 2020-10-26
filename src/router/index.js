@@ -71,7 +71,7 @@ const router = new Router({
           }
         },
         {
-          path: 'content/:z_id',
+          path: 'content/:id',
           name: 'CatalogContent',
           component: () => import('@/views/catalog/CatalogContent'),
           meta: {
