@@ -90,7 +90,7 @@ export default {
         font-size: 12px;
       }
       a:link {
-        color: #4AB8DA;
+        color: $color;
       }
       a:hover {
         color: orange;

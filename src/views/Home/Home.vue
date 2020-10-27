@@ -29,7 +29,7 @@ export default {
 
 <style lang="scss">
 body, html {
-  background: #f0f0f0;
+  background: #f2f2f2;
 }
 .home-component {
   .main-container {

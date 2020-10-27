@@ -7,7 +7,7 @@
         class="nav-item"
         :style="{
           'color': $route.path === item.path ? '#fff' : '#333',
-          'background': $route.path === item.path ? '#4bb8c5' : ''
+          'background': $route.path == item.path ? $color : ''
         }"
         @click="handleClickSwitchRoute(item.path)">
         <div class="nav-item-box">

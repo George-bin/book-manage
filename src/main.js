@@ -7,6 +7,7 @@ import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '../static/theme/index.css'
+import './assets/css/var.scss'
 
 import '../static/css/iconfont/iconfont.css'
 
@@ -17,6 +18,8 @@ import './assets/css/init.css'
 import moment from 'moment'
 Vue.prototype.$moment = moment
 moment.locale('zh-cn')
+
+Vue.prototype.$color = '#107DCF'
 
 Vue.use(ElementUI)
 

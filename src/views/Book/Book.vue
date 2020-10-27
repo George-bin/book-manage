@@ -9,18 +9,20 @@
         v-for="book in bookList"
         :key="book.bid"
         class="book-list-item">
-        <div class="book-cover">
-          <img :src="book.cover" class="" alt="封面" />
-        </div>
-        <div class="book-info">
-          <h3 class="book-name">
-            <span @click="handleGoShowCatalog(book)">{{book.name}}</span>
-          </h3>
-          <p class="book-author">作者: {{book.author}}</p>
-          <p class="book-intro">简介: {{book.des}}</p>
-          <div class="book-btn-group">
-            <el-button @click="handleGoEdit(book)" type="text" size="small">编辑</el-button>
-            <el-button @click="handleDeleteBook(book)" type="text" size="small">删除</el-button>
+        <div class="book-list-item__box">
+          <div class="book-cover">
+            <img :src="book.cover" class="" alt="封面" />
+          </div>
+          <div class="book-info">
+            <h3 class="book-name">
+              <span @click="handleGoShowCatalog(book)">{{book.name}}</span>
+               <span class="book-author">/{{book.author}}</span>
+            </h3>
+            <p class="book-intro">简介: {{book.des}}</p>
+            <div class="book-btn-group">
+              <el-button @click="handleGoEdit(book)" type="text" size="small">编辑</el-button>
+              <el-button @click="handleDeleteBook(book)" type="text" size="small">删除</el-button>
+            </div>
           </div>
         </div>
       </li>
@@ -131,19 +133,24 @@ export default {
 </script>
 
 <style lang="scss">
-  .book-list-main-component {
-    padding: 20px 40px;
-    background: #fff;
+.book-list-main-component {
+  padding: 20px 40px;
+  background: #fff;
+  border-radius: 4px;
+  .book-list-section {
+    // margin-top: 20px;
     border-radius: 4px;
-    .book-list-section {
-      margin-top: 20px;
-      border-radius: 4px;
-      .book-list-item {
+    .book-list-item {
+      width: calc((100% - 20px) / 2);
+      display: inline-block;
+      .book-list-item__box {
         display: flex;
+        padding: 10px;
+        background: #f9f9f9;
         .book-cover {
           width: 100px;
           height: 140px;
-          border: 5px solid #f1f1f1;
+          border: 5px solid #fff;
           img {
             width: 100%;
             height: 100%;
@@ -154,29 +161,37 @@ export default {
           margin-left: 20px;
           .book-name {
             margin-top: 5px;
+            &:hover {
+              border-bottom: 1px solid orangered;
+              color: orangered;
+              cursor: pointer;
+            }
             span {
-              /*font-size: 18px;*/
-              &:hover {
-                border-bottom: 1px solid orangered;
-                color: orangered;
-                cursor: pointer;
-              }
+              font-size: 14px;
+            }
+            .book-author {
+              font-size: 12px;
+              font-weight: normal;
             }
           }
-          .book-author, .book-intro, .book-btn-group {
+          .book-intro, .book-btn-group {
             margin-top: 10px;
           }
           .book-intro {
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 3;
             overflow: hidden;
           }
         }
       }
-      .book-list-item +  .book-list-item {
-        margin-top: 20px;
-      }
+    }
+    .book-list-item +  .book-list-item {
+      margin-top: 10px;
+    }
+    .book-list-item:nth-child(2n) {
+      margin-left: 10px;
     }
   }
+}
 </style>
