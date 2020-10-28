@@ -2,7 +2,8 @@
   <div class="catalog-content-component">
     <c-header title="章节内容" :back-btn="true"></c-header>
     <br>
-    <div style="white-space: pre-wrap;" v-html="content"></div>
+    <h3 class="chapter-title">{{chapter.name}}</h3>
+    <div class="chapter-content" style="white-space: pre-wrap;" v-html="chapter.content"></div>
   </div>
 </template>
 
@@ -16,7 +17,7 @@ export default {
   },
   data () {
     return {
-      content: ''
+      chapter: {}
     }
   },
   computed: {},
@@ -35,7 +36,7 @@ export default {
         .then(res => {
           let { code, msg, data } = res
           if (code === null) {
-            this.content = data.content ? data.content : ''
+            this.chapter = JSON.parse(JSON.stringify(data))
           } else {
             this.$message({
               type: 'warning',
@@ -60,5 +61,15 @@ export default {
   padding: 20px 40px;
   background: #fff;
   border-radius: 4px;
+  .chapter-title {
+    font-size: 24px;
+    font-weight: normal;
+    text-align: center;
+    color: $main_font_color;
+  }
+  .chapter-content {
+    margin-top: 40px;
+    color: $common_font_color;
+  }
 }
 </style>

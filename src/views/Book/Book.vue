@@ -2,6 +2,7 @@
   <div class="book-list-main-component">
     <!-- 筛选组件 -->
     <screen-book :bookScreen="screen" @syncScreen="onSyncScreen"></screen-book>
+    <br>
 
     <!--当前分类小说列表-->
     <ul class="book-list-section">
@@ -11,18 +12,18 @@
         class="book-list-item">
         <div class="book-list-item__box">
           <div class="book-cover">
-            <img :src="book.cover" class="" alt="封面" />
+            <img :src="book.cover || '../../../static//img//normal-cover.jpeg'" class="" alt="封面" />
           </div>
           <div class="book-info">
             <h3 class="book-name">
-              <span @click="handleGoShowCatalog(book)">{{book.name}}</span>
-               <span class="book-author">/{{book.author}}</span>
+              <span class="name" @click="handleGoShowCatalog(book)">{{book.name}}</span>
+              <span class="author">/{{book.author}}（{{book.bid}}）</span>
             </h3>
-            <p class="book-intro">简介: {{book.des}}</p>
             <div class="book-btn-group">
               <el-button @click="handleGoEdit(book)" type="text" size="small">编辑</el-button>
-              <el-button @click="handleDeleteBook(book)" type="text" size="small">删除</el-button>
+              <el-button @click="handleDeleteBook(book)" type="text" size="small" style="color: #E6A23C">删除</el-button>
             </div>
+            <p class="book-intro">{{book.des}}</p>
           </div>
         </div>
       </li>
@@ -141,7 +142,7 @@ export default {
     // margin-top: 20px;
     border-radius: 4px;
     .book-list-item {
-      width: calc((100% - 20px) / 2);
+      width: calc((100% - 10px) / 2);
       display: inline-block;
       .book-list-item__box {
         display: flex;
@@ -158,36 +159,45 @@ export default {
         }
         .book-info {
           flex: 1;
-          margin-left: 20px;
+          margin-left: 10px;
           .book-name {
             margin-top: 5px;
-            &:hover {
-              border-bottom: 1px solid orangered;
-              color: orangered;
-              cursor: pointer;
+            .name {
+              font-size: 16px;
+              color: $color;
+              &:hover {
+                border-bottom: 1px solid orangered;
+                color: orangered;
+                cursor: pointer;
+              }
             }
-            span {
-              font-size: 14px;
-            }
-            .book-author {
+            .author {
               font-size: 12px;
               font-weight: normal;
+              color: $common_font_color;
             }
           }
-          .book-intro, .book-btn-group {
-            margin-top: 10px;
+          .book-btn-group {
+            span {
+              font-size: 12px;
+            }
           }
           .book-intro {
             display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 3;
             overflow: hidden;
+            font-size: 13px;
+            // text-indent: 2em;
+            line-height: 1.8;
+            color: $common_font_color;
           }
         }
       }
     }
-    .book-list-item +  .book-list-item {
+    .book-list-item{
       margin-top: 10px;
+      border-bottom: 2px solid #dfdfdf;
     }
     .book-list-item:nth-child(2n) {
       margin-left: 10px;

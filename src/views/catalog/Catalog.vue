@@ -2,8 +2,10 @@
   <div class="catalog-component">
     <c-header title="小说目录" :back-btn="true"></c-header>
     <br>
-    <h3>正文</h3>
-    <span>共计：{{catalog.length}}章</span>
+    <div class="catalog-title">
+      <h3>正文</h3>
+      <span>共计：{{catalog.length}}章</span>
+    </div>
     <ul class="catalog-list">
       <li
         v-for="item in catalog"
@@ -79,7 +81,17 @@ export default {
   padding: 20px 40px;
   background: #fff;
   border-radius: 4px;
+  .catalog-title {
+    padding-left: 20px;
+    border-left: 4px solid $color;
+    h3 {
+      display: inline-block;
+      font-size: 20px;
+      color: #333;
+    }
+  }
   .catalog-list {
+    margin-top: 10px;
     .catalog-list-item {
       display: inline-block;
       width: 25%;
