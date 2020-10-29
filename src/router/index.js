@@ -151,18 +151,20 @@ const router = new Router({
     {
       path: '/user',
       component: () => import('@/views/home/Home'),
+      redirect: '/user/manage',
       children: [
         {
-          path: 'info',
-          name: 'UserInfo',
-          component: () => import('@/views/book/UserInfo'),
+          path: 'manage',
+          name: 'UserManage',
+          component: () => import('@/views/user/User'),
           meta: {
             requireAuth: true
           }
-        }, {
-          path: 'list',
-          name: 'UserList',
-          component: () => import('@/views/book/UserList'),
+        },
+        {
+          path: 'add',
+          name: 'AddUser',
+          component: () => import('@/views/user/AddUser'),
           meta: {
             requireAuth: true
           }

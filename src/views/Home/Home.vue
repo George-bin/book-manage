@@ -35,8 +35,11 @@ body, html {
   .main-container {
     margin-top: 80px;
     .home-child-view {
-      max-width: 1000px;
+      max-width: 960px;
       margin: 10px auto;
+      padding: 20px 40px;
+      background: #fff;
+      border-radius: 4px;
       // height: calc(100vh - 70px);
       // overflow: auto;
       /*滚动条整体样式*/

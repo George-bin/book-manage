@@ -52,14 +52,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 5px;
-    /*border-bottom: 1px solid #dfdfdf;*/
+    padding-bottom: 3px;
+    border-bottom: 1px solid #dfdfdf;
     font-size: 14px;
     color: #333;
-    .back-btn {
-      color: #4bb8c5;
-      cursor: pointer;
-    }
     h2 {
       height: 36px;
       line-height: 36px;
@@ -67,7 +63,7 @@ export default {
         display: inline-block;
         height: 100%;
         padding: 0 10px;
-        border-bottom: 4px solid #ccc;
+        border-bottom: 4px solid #dfdfdf;
       }
     }
   }

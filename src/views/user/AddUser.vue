@@ -1,12 +1,12 @@
 <template>
-  <div class="add-classify-component">
-    <c-header title="新增分类" :back-btn="true"></c-header>
+  <div class="add-user-component">
+    <c-header title="新增用户" :back-btn="true"></c-header>
     <br>
-    <classify-info use-type="add" ref="classifyInfo">
-      <template v-slot:btn>
-        <el-button :loading="loading" @click="handleRegisterClassify" type="primary">提交</el-button>
+    <user-info use-type="add" ref="userInfo">
+      <template v-slot:btnGroup>
+        <el-button :loading="loading" type="primary" size="small" @click="handleSubmit">提交</el-button>
       </template>
-    </classify-info>
+    </user-info>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
   props: {},
   components: {
     CHeader: () => import('@/components/common/CHeader'),
-    ClassifyInfo: () => import('@/components/classify/ClassifyInfo')
+    UserInfo: () => import('@/components/user/UserInfo')
   },
   data () {
     return {
@@ -30,27 +30,23 @@ export default {
   mounted () {},
   methods: {
     ...mapActions([
-      'AddClassify'
+      'AddUser'
     ]),
-    /**
-     * 新增分类
-     */
-    handleRegisterClassify () {
-      this.$refs['classifyInfo'].$refs['form'].validate((valid) => {
+    handleSubmit () {
+      console.log(this.$refs.userInfo.formData)
+      this.$refs['userInfo'].$refs['form'].validate((valid) => {
         if (valid) {
-          let formdata = {...this.$refs['classifyInfo'].formData}
+          let data = this.$refs['userInfo'].formData
+          data = JSON.parse(JSON.stringify(data))
           this.loading = true
-          this.AddClassify({
-            ...formdata
-          })
-            .then(data => {
-              let { code, msg } = data
+          this.AddUser(data)
+            .then(res => {
+              let { code, msg } = res
               if (code === null) {
                 this.$message({
                   type: 'success',
-                  message: '成功!'
+                  message: '新增用户成功！'
                 })
-                this.$router.back()
               } else {
                 this.$message({
                   type: 'warning',
@@ -59,10 +55,10 @@ export default {
               }
             })
             .catch(err => {
-              console.error('新增分类失败', err)
+              console.error('新增用户失败：', err)
               this.$message({
                 type: 'error',
-                message: '新增分类失败!'
+                message: '新增用户失败！'
               })
             })
             .finally(() => {
@@ -71,9 +67,8 @@ export default {
         } else {
           this.$message({
             type: 'warning',
-            message: '请核对信息后重新提交！'
+            message: '请完善必要信息！'
           })
-          return false
         }
       })
     }
@@ -82,6 +77,4 @@ export default {
 </script>
 
 <style lang="scss">
-.add-classify-component {
-}
 </style>

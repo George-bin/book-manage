@@ -127,10 +127,6 @@ export default {
 
 <style lang="scss">
 .label-component {
-  position: relative;
-  padding: 20px 40px;
-  background: #fff;
-  border-radius: 4px;
   .label-list-title {
     height: 70px;
     line-height: 70px;

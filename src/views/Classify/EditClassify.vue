@@ -82,9 +82,5 @@ export default {
 
 <style lang="scss">
 .edit-classify-component {
-  margin: 10px auto;
-  padding: 20px 40px;
-  background: #fff;
-  border-radius: 4px;
 }
 </style>

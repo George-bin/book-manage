@@ -3,10 +3,6 @@ import {
   getBookListRequest,
   updateBookRequest,
   deleteBookByIdRequest,
-  registerUserRequest,
-  getUserListRequest,
-  deleteUserRequest,
-  updateUserInfoRequest,
   getBookInfoByIdRequest,
   getBookListByScreenRequest
 } from '../../api/book'
@@ -86,56 +82,6 @@ const home = {
     GetBookListByScreen ({ commit }, data) {
       return new Promise((resolve, reject) => {
         getBookListByScreenRequest(data)
-          .then(response => {
-            resolve(response.data)
-          })
-          .catch(err => {
-            reject(err)
-          })
-      })
-    },
-    // 获取用户列表
-    GetUserList ({ commit }) {
-      return new Promise((resolve, reject) => {
-        getUserListRequest()
-          .then(response => {
-            // console.log('用户列表', response)
-            commit('SET_USER_LIST', response.data.userList)
-            resolve(response.data)
-          })
-          .catch(err => {
-            reject(err)
-          })
-      })
-    },
-    // 新增用户
-    RegisterUser ({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        registerUserRequest(data)
-          .then(response => {
-            resolve(response)
-          })
-          .catch(err => {
-            reject(err)
-          })
-      })
-    },
-    // 更新用户信息
-    UpdateUserInfo ({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        updateUserInfoRequest(data)
-          .then(response => {
-            resolve(response.data)
-          })
-          .catch(err => {
-            reject(err)
-          })
-      })
-    },
-    // 删除用户
-    DeleteUser ({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        deleteUserRequest(data)
           .then(response => {
             resolve(response.data)
           })

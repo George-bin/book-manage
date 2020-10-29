@@ -12,8 +12,6 @@
       </el-form-item>
       <el-form-item>
         <slot name="btn"></slot>
-<!--        <el-button v-if="useType === 'add' || !useType" @click="handleRegisterClassify" class="submit-btn" type="primary">提交</el-button>-->
-<!--        <el-button v-else @click="handleUpdateClassify" class="submit-btn" type="primary">更新</el-button>-->
         <el-button>重置表单</el-button>
       </el-form-item>
     </el-form>

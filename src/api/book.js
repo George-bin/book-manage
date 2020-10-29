@@ -48,36 +48,3 @@ export function getBookListByScreenRequest (data) {
     params: data
   })
 }
-
-// 获取用户列表
-export function getUserListRequest () {
-  return request({
-    url: '/getUserList'
-  })
-}
-
-// 新增用户
-export function registerUserRequest (data) {
-  return request({
-    url: '/registerUser',
-    method: 'post',
-    data: data
-  })
-}
-
-// 删除用户
-export function deleteUserRequest (_id) {
-  return request({
-    url: `/deleteUser/${_id}`,
-    method: 'delete'
-  })
-}
-
-// 更新用户
-export function updateUserInfoRequest (data) {
-  return request({
-    url: `/updateUserInfo/${data._id}`,
-    method: 'put',
-    data: data
-  })
-}

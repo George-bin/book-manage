@@ -87,8 +87,5 @@ export default {
 
 <style lang="scss">
 .edit-book-component {
-  padding: 20px 40px;
-  background: #fff;
-  border-radius: 4px;
 }
 </style>

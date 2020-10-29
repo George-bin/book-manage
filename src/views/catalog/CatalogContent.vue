@@ -58,9 +58,6 @@ export default {
 
 <style lang="scss">
 .catalog-content-component {
-  padding: 20px 40px;
-  background: #fff;
-  border-radius: 4px;
   .chapter-title {
     font-size: 24px;
     font-weight: normal;

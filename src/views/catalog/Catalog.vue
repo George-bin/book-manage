@@ -78,9 +78,6 @@ export default {
 
 <style lang="scss">
 .catalog-component {
-  padding: 20px 40px;
-  background: #fff;
-  border-radius: 4px;
   .catalog-title {
     padding-left: 20px;
     border-left: 4px solid $color;

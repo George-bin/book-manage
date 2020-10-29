@@ -2,7 +2,7 @@
   <div class="classify-list-component">
     <m-header title="分类管理" :back-btn="false">
       <template v-slot:btnGroup>
-        <el-button type="primary" size="text" @click.native="handleClickGoAdd">新建</el-button>
+        <el-button type="text" size="mini" @click.native="handleClickGoAdd">新建</el-button>
       </template>
     </m-header>
     <br>
@@ -140,10 +140,6 @@ export default {
 
 <style lang="scss">
 .classify-list-component {
-  position: relative;
-  padding: 20px 40px;
-  background: #fff;
-  border-radius: 4px;
   .classify-list-title {
     height: 70px;
     line-height: 70px;

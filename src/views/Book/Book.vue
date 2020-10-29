@@ -135,9 +135,6 @@ export default {
 
 <style lang="scss">
 .book-list-main-component {
-  padding: 20px 40px;
-  background: #fff;
-  border-radius: 4px;
   .book-list-section {
     // margin-top: 20px;
     border-radius: 4px;

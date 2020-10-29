@@ -27,10 +27,5 @@ export default {
 
 <style lang="scss">
 .edit-label-component {
-  width: 920px;
-  margin: 10px auto;
-  padding: 20px 40px;
-  background: #fff;
-  border-radius: 4px;
 }
 </style>
