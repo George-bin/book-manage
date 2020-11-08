@@ -26,14 +26,14 @@ export function addLabelRequest (data) {
 // 更新标签
 export function updateLabelRequest (data) {
   return request({
-    url: `/label/${data._id}`,
+    url: '/label',
     method: 'put',
     data
   })
 }
 
 // 删除标签
-export function DelLabelRequest (id) {
+export function delLabelByIdRequest (id) {
   return request({
     url: `/label/${id}`,
     method: 'delete'

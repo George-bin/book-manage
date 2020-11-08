@@ -37,17 +37,20 @@
           label="姓名">
         </el-table-column>
         <el-table-column
-          label="创建时间">
+          label="用户权限">
           <template slot-scope="{row}">
-            <span>{{row.createTime ? $moment(row.createTime).format('YYYY/MM/DD HH:mm') : ''}}</span>
+            <el-tag type="success">
+              <span>{{handleMatchUserRole(row.role)}}</span>
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column
           fixed="right"
-          label="操作">
-          <template slot-scope="scope">
-            <el-button @click="handleEditClassify(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button :disabled="scope.row.bookCount > 0" @click="handleDelClassify(scope.row)" type="text" size="small">删除</el-button>
+          label="操作"
+          width="120">
+          <template slot-scope="{row}">
+            <el-button @click="toEditUser(row)" type="text" size="small">编辑</el-button>
+            <el-button @click="handleDelUserById(row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -57,6 +60,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import roles from '@/router/role'
 export default {
   name: '',
   props: {},
@@ -76,13 +80,24 @@ export default {
   },
   methods: {
     ...mapActions([
-      'GetUserList'
+      'GetUserList',
+      'DeleteUserById'
     ]),
     init () {
       this.handleGetUserList()
     },
     toAddUser () {
       this.$router.push('/user/add')
+    },
+    toEditUser (user) {
+      this.$router.push(`/user/edit/${user.id}`)
+    },
+    handleMatchUserRole (role) {
+      let index = roles.findIndex(item => item.role === role)
+      if (index > -1) {
+        return roles[index].label
+      }
+      return ''
     },
     handleGetUserList () {
       this.loading = true
@@ -107,6 +122,37 @@ export default {
         })
         .finally(() => {
           this.loading = false
+        })
+    },
+    handleDelUserById (user) {
+      this.$confirm('确定删除该用户吗？', '提示', {
+        type: 'warning'
+      })
+        .then(() => {
+          this.loading = true
+          this.DeleteUserById(user.id)
+            .then(res => {
+              let { code, msg } = res
+              if (code === null) {
+                this.$message({
+                  type: 'success',
+                  message: '删除用户成功！'
+                })
+                this.handleGetUserList()
+              } else {
+                this.$message({
+                  type: 'warning',
+                  message: msg
+                })
+              }
+            })
+            .catch(err => {
+              console.error('删除用户失败：', err)
+              this.$message({
+                type: 'error',
+                message: '删除用户失败！'
+              })
+            })
         })
     }
   }

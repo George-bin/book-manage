@@ -139,9 +139,9 @@ const router = new Router({
           }
         },
         {
-          path: 'edit/:_id',
+          path: 'edit/:id',
           name: 'EditLabel',
-          component: () => import('@/views/Label/EditLabel'),
+          component: () => import('@/views/label/EditLabel'),
           meta: {
             requireAuth: true
           }
@@ -165,6 +165,14 @@ const router = new Router({
           path: 'add',
           name: 'AddUser',
           component: () => import('@/views/user/AddUser'),
+          meta: {
+            requireAuth: true
+          }
+        },
+        {
+          path: 'edit/:id',
+          name: 'EditUser',
+          component: () => import('@/views/user/EditUser'),
           meta: {
             requireAuth: true
           }

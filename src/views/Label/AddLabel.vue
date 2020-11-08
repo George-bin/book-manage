@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: '',
   props: {},
@@ -32,45 +33,49 @@ export default {
   created () {},
   mounted () {},
   methods: {
+    ...mapActions([
+      'AddLabel'
+    ]),
     // 新增标签
     handleAddLabel () {
-      this.loading = true
-      this.AddLabel({
-        name: this.labelForm.name
-      })
-        .then(res => {
-          this.loading = false
-          let { code, msg } = res
-          if (code === 0) {
-            this.$message({
-              type: 'success',
-              message: '成功!'
+      this.$refs['labelInfo'].$refs['form'].validate((valid) => {
+        if (valid) {
+          this.loading = true
+          let data = this.$refs['labelInfo'].formData
+          this.AddLabel({...data})
+            .then(res => {
+              let { code, msg } = res
+              if (code === null) {
+                this.$message({
+                  type: 'success',
+                  message: '成功!'
+                })
+                this.$refs['labelInfo'].handleInitForm()
+                // this.GetLabelList()
+              } else {
+                this.$message({
+                  type: 'warning',
+                  message: msg
+                })
+              }
             })
-            this.$refs['labelInfo'].handleInitLabelForm()
-            this.GetLabelList()
-            this.$confirm('新增标签成功，是否继续添加标签?', '提示', {
-              type: 'success',
-              cancelButtonText: '不添加',
-              confirmButtonText: '添加'
-            })
-              .then(() => {})
-              .catch(() => {
-                this.$router.back()
+            .catch(err => {
+              console.log('新建标签失败：', err)
+              this.$message({
+                type: 'error',
+                message: '新建标签失败!'
               })
-          } else {
-            this.$message({
-              type: 'warning',
-              message: msg
             })
-          }
-        })
-        .catch(err => {
-          console.log('新建标签失败', err)
+            .finally(() => {
+              this.loading = false
+            })
+        } else {
           this.$message({
-            type: 'error',
-            message: '新建标签失败!'
+            type: 'warning',
+            message: '请完善表单信息！'
           })
-        })
+        }
+      })
     }
   }
 }

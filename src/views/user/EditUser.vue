@@ -1,16 +1,12 @@
 <template>
-  <div class="edit-label-component">
-    <m-header title="编辑标签" :back-btn="false"></m-header>
+  <div class="edit-user-component">
+    <c-header title="更新用户" :back-btn="true"></c-header>
     <br>
-    <label-info ref="labelInfo" use-type="edit">
+    <user-info use-type="edit" ref="userInfo">
       <template v-slot:btnGroup>
-        <el-button
-          type="primary"
-          @click="handleUpdateLabel">
-          更新
-        </el-button>
+        <el-button :loading="loading" type="primary" size="small" @click="handleSubmit">提交</el-button>
       </template>
-    </label-info>
+    </user-info>
   </div>
 </template>
 
@@ -20,11 +16,13 @@ export default {
   name: '',
   props: {},
   components: {
-    MHeader: () => import('@/components/common/CHeader'),
-    LabelInfo: () => import('@/components/label/LabelInfo')
+    CHeader: () => import('@/components/common/CHeader'),
+    UserInfo: () => import('@/components/user/UserInfo')
   },
   data () {
-    return {}
+    return {
+      loading: false
+    }
   },
   computed: {},
   watch: {},
@@ -32,21 +30,23 @@ export default {
   mounted () {},
   methods: {
     ...mapActions([
-      'UpdateLabel'
+      'GetUserById',
+      'UpdateUser'
     ]),
-    // 更新标签
-    handleUpdateLabel () {
-      this.$refs['labelInfo'].$refs['form'].validate((valid) => {
+    handleSubmit () {
+      console.log(this.$refs.userInfo.formData)
+      this.$refs['userInfo'].$refs['form'].validate((valid) => {
         if (valid) {
+          let data = this.$refs['userInfo'].formData
+          data = JSON.parse(JSON.stringify(data))
           this.loading = true
-          let data = this.$refs['labelInfo'].formData
-          this.UpdateLabel({...data})
+          this.UpdateUser(data)
             .then(res => {
               let { code, msg } = res
               if (code === null) {
                 this.$message({
                   type: 'success',
-                  message: '成功!'
+                  message: '更新用户成功！'
                 })
                 this.$router.back()
               } else {
@@ -57,10 +57,10 @@ export default {
               }
             })
             .catch(err => {
-              console.log('更新标签失败：', err)
+              console.error('更新用户失败：', err)
               this.$message({
                 type: 'error',
-                message: '更新标签失败!'
+                message: '更新用户失败！'
               })
             })
             .finally(() => {
@@ -69,7 +69,7 @@ export default {
         } else {
           this.$message({
             type: 'warning',
-            message: '请完善表单信息！'
+            message: '请完善必要信息！'
           })
         }
       })
@@ -79,6 +79,4 @@ export default {
 </script>
 
 <style lang="scss">
-.edit-label-component {
-}
 </style>

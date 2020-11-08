@@ -2,7 +2,8 @@ import {
   addUserRequest,
   getUserListRequest,
   deleteUserRequest,
-  updateUserRequest
+  updateUserRequest,
+  getUserByIdRequest
 } from '@/api/user'
 
 const user = {
@@ -13,6 +14,18 @@ const user = {
     GetUserList ({ commit }) {
       return new Promise((resolve, reject) => {
         getUserListRequest()
+          .then(response => {
+            resolve(response.data)
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    // 查询用户 by id
+    GetUserById ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        getUserByIdRequest(data)
           .then(response => {
             resolve(response.data)
           })
@@ -46,7 +59,7 @@ const user = {
       })
     },
     // 删除用户
-    DeleteUser ({ commit }, data) {
+    DeleteUserById ({ commit }, data) {
       return new Promise((resolve, reject) => {
         deleteUserRequest(data)
           .then(response => {

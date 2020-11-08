@@ -43,13 +43,13 @@ export default {
           icon: 'el-icon-s-management',
           label: '分类管理'
         },
-        // {
-        //   path: '/label/manage',
-        //   icon: 'el-icon-s-management',
-        //   label: '标签管理'
-        // },
         {
-          path: '/user',
+          path: '/label/manage',
+          icon: 'el-icon-s-management',
+          label: '标签管理'
+        },
+        {
+          path: '/user/manage',
           icon: 'el-icon-user-solid',
           label: '用户管理'
         }

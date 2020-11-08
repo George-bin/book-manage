@@ -29,9 +29,9 @@
         <el-select v-model="formData.role" placeholder="请选择">
           <el-option
             v-for="item in roleList"
-            :key="item.value"
+            :key="item.role"
             :label="item.label"
-            :value="item.value">
+            :value="item.role">
           </el-option>
         </el-select>
       </el-form-item>
@@ -44,9 +44,16 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import roles from '@/router/role'
 export default {
   name: '',
-  props: {},
+  props: {
+    useType: {
+      type: String,
+      default: 'add'
+    }
+  },
   components: {},
   data () {
     return {
@@ -74,17 +81,45 @@ export default {
           { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' }
         ]
       },
-      roleList: [
-        { label: '系统管理员', value: 'admin' },
-        { label: '微信小程序用户', value: 'wx' }
-      ]
+      roleList: JSON.parse(JSON.stringify(roles))
     }
   },
   computed: {},
   watch: {},
   created () {},
-  mounted () {},
-  methods: {}
+  mounted () {
+    console.log(this.$route.params)
+    if (this.useType === 'edit') {
+      this.handleGetUserById()
+    }
+  },
+  methods: {
+    ...mapActions([
+      'GetUserById'
+    ]),
+    handleGetUserById () {
+      let { id } = this.$route.params
+      this.GetUserById(id)
+        .then(res => {
+          let { code, msg, data } = res
+          if (code === null) {
+            this.formData = JSON.parse(JSON.stringify(data))
+          } else {
+            this.$message({
+              type: 'warning',
+              message: msg
+            })
+          }
+        })
+        .catch(err => {
+          console.error('获取用户信息失败：GetUserById', err)
+          this.$message({
+            type: 'error',
+            message: '获取用户信息失败!'
+          })
+        })
+    }
+  }
 }
 </script>
 

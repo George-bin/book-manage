@@ -3,7 +3,7 @@ import {
   getLabelInfoByIdRequest,
   addLabelRequest,
   updateLabelRequest,
-  DelLabelRequest
+  delLabelByIdRequest
 } from '@/api/label.js'
 
 const label = {
@@ -21,10 +21,10 @@ const label = {
       return new Promise((resolve, reject) => {
         getLabelListRequest()
           .then(response => {
-            let { errcode, labelList } = response.data
-            if (errcode === 0) {
-              labelList = JSON.parse(JSON.stringify(labelList))
-              commit('SET_LABEL_LIST', labelList)
+            let { code, data } = response.data
+            if (code === null) {
+              data = JSON.parse(JSON.stringify(data))
+              commit('SET_LABEL_LIST', data)
             }
             resolve(response.data)
           })
@@ -60,7 +60,7 @@ const label = {
     // 更新标签
     UpdateLabel ({ commit }, data) {
       return new Promise((resolve, reject) => {
-        updateLabelRequest()
+        updateLabelRequest(data)
           .then(response => {
             resolve(response.data)
           })
@@ -69,10 +69,10 @@ const label = {
           })
       })
     },
-    // 更新标签
-    DelLabel ({ commit }, id) {
+    // 删除标签by id
+    DelLabelById ({ commit }, id) {
       return new Promise((resolve, reject) => {
-        DelLabelRequest(id)
+        delLabelByIdRequest(id)
           .then(response => {
             resolve(response.data)
           })

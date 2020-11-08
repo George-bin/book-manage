@@ -7,6 +7,13 @@ export function getUserListRequest () {
   })
 }
 
+// 获取用户 by id
+export function getUserByIdRequest (id) {
+  return request({
+    url: `/user/${id}`
+  })
+}
+
 // 新增用户
 export function addUserRequest (data) {
   return request({
@@ -19,7 +26,7 @@ export function addUserRequest (data) {
 // 删除用户
 export function deleteUserRequest (_id) {
   return request({
-    url: `/deleteUser/${_id}`,
+    url: `/user/${_id}`,
     method: 'delete'
   })
 }
@@ -27,8 +34,8 @@ export function deleteUserRequest (_id) {
 // 更新用户
 export function updateUserRequest (data) {
   return request({
-    url: `/updateUserInfo/${data._id}`,
+    url: `/user`,
     method: 'put',
-    data: data
+    data
   })
 }

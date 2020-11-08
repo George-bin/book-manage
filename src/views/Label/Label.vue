@@ -2,7 +2,7 @@
   <div class="label-component">
     <m-header title="标签管理" :back-btn="false">
       <template v-slot:btnGroup>
-        <el-button type="primary" size="mini" @click.native="handleClickGoAdd">新建</el-button>
+        <el-button type="text" size="mini" @click.native="toAddLabel">新建</el-button>
       </template>
     </m-header>
     <br>
@@ -45,8 +45,8 @@
           fixed="right"
           label="操作">
           <template slot-scope="scope">
-            <el-button @click="handleEditLabel(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button @click="handleDelLabel(scope.row)" type="text" size="small">删除</el-button>
+            <el-button @click="toEditLabel(scope.row)" type="text" size="small">编辑</el-button>
+            <el-button @click="handleDelLabel(scope.row)" type="text" size="small" style="color: orangered">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -71,17 +71,44 @@ export default {
     })
   },
   mounted () {
-    // this.GetLabelList()
+    this.handleGetLabelList()
   },
   methods: {
     ...mapActions([
       'GetLabelList',
-      'DelLabel'
+      'DelLabelById'
     ]),
     // 编辑标签
-    handleEditLabel (label) {
-      // console.log('label:', label)
-      this.$router.push(`/label/edit/${label._id}`)
+    toEditLabel (label) {
+      this.$router.push(`/label/edit/${label.id}`)
+    },
+    toAddLabel () {
+      this.$router.push('/label/add')
+    },
+    // 获取标签列表
+    handleGetLabelList () {
+      this.loading = true
+      this.GetLabelList()
+        .then(res => {
+          let { code, msg } = res
+          if (code === null) {
+          } else {
+            this.$message({
+              type: 'warning',
+              message: msg
+            })
+          }
+        })
+        .catch(err => {
+          console.error('获取标签列表失败：', err)
+          this.$message({
+            type: 'error',
+            message: '获取标签列表失败!'
+          })
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
     // 删除标签
     handleDelLabel (label) {
@@ -90,11 +117,10 @@ export default {
       })
         .then(() => {
           this.loading = true
-          this.DelLabel(label._id)
-            .then(data => {
-              this.loading = false
-              let { errcode, message } = data
-              if (errcode === 0) {
+          this.DelLabelById(label.id)
+            .then(res => {
+              let { code, msg } = res
+              if (code === 0) {
                 this.$message({
                   type: 'success',
                   message: '删除标签成功!'
@@ -103,23 +129,22 @@ export default {
               } else {
                 this.$message({
                   type: 'warning',
-                  message
+                  message: msg
                 })
               }
             })
             .catch(err => {
               console.error('删除标签失败', err)
-              this.loading = false
               this.$message({
                 type: 'error',
                 message: '删除标签失败!'
               })
             })
+            .finally(() => {
+              this.loading = false
+            })
         })
         .catch(() => {})
-    },
-    handleClickGoAdd () {
-      this.$router.push('/label/add')
     }
   }
 }

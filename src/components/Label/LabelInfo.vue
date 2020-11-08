@@ -1,26 +1,19 @@
 <template>
   <div class="label-info-component">
-    <el-form label-width="80px">
-      <el-form-item label="标签名称">
-        <el-input v-model="labelForm.name" placeholder="请输入标签名称!"></el-input>
+    <el-form
+      ref="form"
+      :model="formData"
+      :rules="rules"
+      label-width="80px">
+      <el-form-item label="标签名称" prop="name">
+        <el-input v-model.trim="formData.name" placeholder="请输入标签名称!"></el-input>
       </el-form-item>
-      <el-form-item label="备注">
-        <el-input v-model="labelForm.remark" placeholder="备注!"></el-input>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model.trim="formData.remark" placeholder="备注!"></el-input>
       </el-form-item>
       <el-form-item>
         <slot name="btnGroup"></slot>
-<!--        <el-button-->
-<!--          v-if="useType === 'add' || !useType"-->
-<!--          @click="handleAddLabel"-->
-<!--          class="submit-btn"-->
-<!--          type="primary"-->
-<!--          :loading="loading">提交</el-button>-->
-<!--        <el-button-->
-<!--          v-else-->
-<!--          @click="handleUpdateLabel"-->
-<!--          class="submit-btn"-->
-<!--          type="primary"-->
-<!--          :loading="loading">更新</el-button>-->
+        <el-button type="warning" @click="handleInitForm">重置表单</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -37,9 +30,15 @@ export default {
   },
   data () {
     return {
-      labelForm: {
+      formData: {
         name: '',
         remark: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入标签名！', trigger: 'blur' },
+          { min: 2, max: 6, message: '长度在 2 到 6 个字符', trigger: 'blur' }
+        ]
       },
       loading: false
     }
@@ -56,16 +55,16 @@ export default {
     ]),
     init () {
       if (this.useType === 'edit') {
-        let { _id } = this.$route.params
-        this.GetLabelInfoById(_id)
-          .then(data => {
-            let { errcode, message, label } = data
-            if (errcode === 0) {
-              this.labelForm = JSON.parse(JSON.stringify(label))
+        let { id } = this.$route.params
+        this.GetLabelInfoById(id)
+          .then(res => {
+            let { code, msg, data } = res
+            if (code === null) {
+              this.formData = JSON.parse(JSON.stringify(data))
             } else {
               this.$message({
                 type: 'warning',
-                message
+                message: msg
               })
               this.$router.back()
             }
@@ -76,29 +75,10 @@ export default {
           })
       }
     },
-    // 更新分类
-    handleUpdateLabel () {
-      this.$confirm('确定更新吗?', '提示', {
-        type: 'warning'
-      })
-        .then(() => {
-          this.UpdateClassify(this.labelForm)
-            .then(() => {
-              this.$message({
-                type: 'success',
-                message: '成功!'
-              })
-              this.useType = 'edit'
-              this.GetClassifyList()
-            })
-        })
-        .catch(() => {
-          console.log('取消提交')
-        })
-    },
-    handleInitLabelForm () {
-      this.labelForm = {
-        name: ''
+    handleInitForm () {
+      this.formData = {
+        name: '',
+        remark: ''
       }
     }
   }
