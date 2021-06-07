@@ -12,7 +12,8 @@
         class="book-list-item">
         <div class="book-list-item__box">
           <div class="book-cover">
-            <img :src="book.cover || '../../../static/img/normal-cover.jpeg'" class="" alt="封面" />
+            <img v-if="book.cover" :src="book.cover" alt="" />
+            <img v-else src="../../../static/img/normal-cover.jpeg" class="" alt="封面" />
           </div>
           <div class="book-info">
             <h3 class="book-name">
